@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Susuario */
-
 $this->title = $model->pkusuario;
 $this->params['breadcrumbs'][] = ['label' => 'Susuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

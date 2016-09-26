@@ -15,6 +15,9 @@ use Yii;
  * @property string $spassword
  * @property integer $stipousuario
  * @property string $sestado
+ * @property string $nombreusuario
+ * @property string $authkey
+ * @property string $accesstoken
  *
  * @property Senvio[] $senvios
  * @property Simgusuario[] $simgusuarios
@@ -22,6 +25,7 @@ use Yii;
  */
 class Susuario extends \yii\db\ActiveRecord
 {
+    public $password_repeat;
     /**
      * @inheritdoc
      */
@@ -29,7 +33,7 @@ class Susuario extends \yii\db\ActiveRecord
     {
         return 'susuario';
     }
-
+estoy creando el usuario para que tenga acceso mediante access token o key
     /**
      * @inheritdoc
      */
@@ -37,10 +41,22 @@ class Susuario extends \yii\db\ActiveRecord
     {
         return [
             [['stipousuario'], 'integer'],
-            [['snombre', 'sapellido', 'spassword'], 'string', 'max' => 50],
+
+            [['snombre', 'sapellido'], 'string', 'max' => 50],
+            
             [['semail'], 'string', 'max' => 25],
+            [['semail'], 'email'],
+
             [['stelefono'], 'string', 'max' => 15],
+
             [['sestado'], 'string', 'max' => 1],
+
+            [['password'], 'required'],
+            [['spassword'], 'string', 'max' => 50],
+            [['spassword'], 'string', 'min' => 6],
+            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Contraseñas diferentes!!"],
+
+
         ];
     }
 
@@ -50,14 +66,15 @@ class Susuario extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'pkusuario' => 'Pkusuario',
-            'snombre' => 'Snombre',
-            'sapellido' => 'Sapellido',
-            'semail' => 'Semail',
-            'stelefono' => 'Stelefono',
-            'spassword' => 'Spassword',
-            'stipousuario' => 'Stipousuario',
-            'sestado' => 'Sestado',
+            'pkusuario' => 'Identificador primario',
+            'snombre' => 'Nombre Completo',
+            'sapellido' => 'Apellidos Completos',
+            'semail' => 'Correo Electronico',
+            'stelefono' => 'Telefono',
+            'spassword' => 'Contraseña',
+            'stipousuario' => 'Tipo de usuario',
+            'sestado' => 'Estado',
+            'password_repeat' => 'Repita contraseña',
         ];
     }
 
