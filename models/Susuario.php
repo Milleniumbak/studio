@@ -15,7 +15,7 @@ use Yii;
  * @property string $spassword
  * @property integer $stipousuario
  * @property string $sestado
- * @property string $nombreusuario
+ * @property string $username
  * @property string $authkey
  * @property string $accesstoken
  *
@@ -33,7 +33,7 @@ class Susuario extends \yii\db\ActiveRecord
     {
         return 'susuario';
     }
-estoy creando el usuario para que tenga acceso mediante access token o key
+
     /**
      * @inheritdoc
      */
@@ -46,15 +46,26 @@ estoy creando el usuario para que tenga acceso mediante access token o key
             
             [['semail'], 'string', 'max' => 25],
             [['semail'], 'email'],
+            [['semail'], 'required'],
 
             [['stelefono'], 'string', 'max' => 15],
 
             [['sestado'], 'string', 'max' => 1],
 
-            [['password'], 'required'],
+            [['username'], 'string', 'max' => 25],
+            [['username'], 'string', 'min' => 6],
+            [['username'], 'required'],
+
+            [['authkey'], 'string', 'max' => 50],
+
+            [['accesstoken'], 'string', 'max' => 50],
+
+            [['spassword'], 'required'],
             [['spassword'], 'string', 'max' => 50],
             [['spassword'], 'string', 'min' => 6],
-            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Contraseñas diferentes!!"],
+
+            [['password_repeat'], 'required'],
+            ['password_repeat', 'compare', 'compareAttribute'=>'spassword', 'skipOnEmpty' => false, 'message'=>"Contraseñas diferentes!!"],
 
 
         ];
@@ -75,6 +86,9 @@ estoy creando el usuario para que tenga acceso mediante access token o key
             'stipousuario' => 'Tipo de usuario',
             'sestado' => 'Estado',
             'password_repeat' => 'Repita contraseña',
+            'username'  => 'Nombre de usuario',
+            'authkey'   => 'llave de autorizacion',
+            'accesstoken' => 'Token de Acceso',
         ];
     }
 

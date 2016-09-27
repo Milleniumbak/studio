@@ -35,6 +35,15 @@ class LoginForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Usuario',
+            'password' => 'Contraseña',
+            'rememberMe' => 'Recordarme'
+        ];
+    }
+
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
@@ -45,10 +54,12 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
+            $iuser = new Iuser();
             $user = $this->getUser();
 
+            $iuser->usuario = $user;
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Contraseña y/o Nombre de usuario incorrecto.');
             }
         }
     }
@@ -59,8 +70,11 @@ class LoginForm extends Model
      */
     public function login()
     {
+        $iuser = new Iuser();
+        $iuser->usuario = $this->getUser();
+
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($iuser, $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
     }
@@ -73,9 +87,8 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = Susuario::findOne(['username' => $this->username]);
         }
-
         return $this->_user;
     }
 }

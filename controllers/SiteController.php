@@ -60,7 +60,8 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            // si inicia session correctamente > enviamos a la pagina inicial
+            return $this->goHome();
         }
         return $this->render('login', [
             'model' => $model,
@@ -73,7 +74,6 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-
     public function actionContact()
     {
         $model = new ContactForm();

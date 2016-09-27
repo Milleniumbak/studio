@@ -11,6 +11,11 @@ $config = [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
     'components' => [
+        'user' => [
+            'identityClass' => 'app\models\User', // User must implement the IdentityInterface
+            'enableAutoLogin' => true,
+            // 'loginUrl' => ['user/login'],
+                ],    
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
