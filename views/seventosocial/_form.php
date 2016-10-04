@@ -2,10 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\widgets\DatePicker;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Seventosocial */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="seventosocial-form">
@@ -16,11 +14,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sdireccion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sfecha')->textInput() ?>
+    <?= $form->field($model, 'sfecha')->widget( DatePicker::classname(), [
+                'options' => ['placeholder' => 'Ingrese la fecha'],
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions' =>  [
+                        'autoclose'=>true,
+                        'format' => 'dd-M-yyyy'
+                                    ]                            
+        ]);
+    ?>
 
     <?= $form->field($model, 'stelefono')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sestado')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'smensaje')->textInput(['maxlength' => true, 'value' => 'http://www.studio.ddns.net']) ?>
+
+    <?= $form->field($model, 'path')->hiddenInput()->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

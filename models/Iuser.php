@@ -82,6 +82,6 @@ class Iuser implements IdentityInterface
      */
     public function validatePassword($password)
     {   
-        return $this->usuario->password === $password;
+        return $this->usuario->spassword === $password;
     }
 }

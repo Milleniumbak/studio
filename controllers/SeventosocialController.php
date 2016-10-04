@@ -8,7 +8,8 @@ use app\models\SeventosocialSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use dosamigos\qrcode\QrCode;
+use dosamigos\qrcode\formats\MailTo;
 /**
  * SeventosocialController implements the CRUD actions for Seventosocial model.
  */
@@ -43,7 +44,13 @@ class SeventosocialController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    /**
+     * Metodo que genera un imagen en png con un codigo QR
+     * @return [type] [description]
+     */
+    public function actionGenerateqr($data){
+        return QrCode::png($data);
+    }
     /**
      * Displays a single Seventosocial model.
      * @param integer $id
@@ -65,7 +72,9 @@ class SeventosocialController extends Controller
     {
         $model = new Seventosocial();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->sestado = "T";
+             $model->save();
             return $this->redirect(['view', 'id' => $model->pkevento]);
         } else {
             return $this->render('create', [
@@ -84,7 +93,9 @@ class SeventosocialController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->sestado = "T";
+             $model->save();
             return $this->redirect(['view', 'id' => $model->pkevento]);
         } else {
             return $this->render('update', [

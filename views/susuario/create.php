@@ -3,10 +3,7 @@
 use yii\helpers\Html;
 
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Susuario */
-
-$this->title = 'Create Susuario';
+$this->title = 'Crear usuario';
 $this->params['breadcrumbs'][] = ['label' => 'Susuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

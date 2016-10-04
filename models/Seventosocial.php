@@ -13,6 +13,8 @@ use Yii;
  * @property string $sfecha
  * @property string $stelefono
  * @property string $sestado
+ * @property string $smensaje
+ * @property string $path
  *
  * @property Senvio[] $senvios
  * @property Simgevent[] $simgevents
@@ -35,9 +37,19 @@ class Seventosocial extends \yii\db\ActiveRecord
     {
         return [
             [['sfecha'], 'safe'],
-            [['sdescripcion', 'sdireccion'], 'string', 'max' => 50],
+            [['sfecha'], 'required'],
+
+            [['sdescripcion', 'sdireccion', 'smensaje'], 'string', 'max' => 50],
+            [['sdescripcion', 'sdireccion', 'smensaje'], 'required'],
+
+            [['smensaje'], 'string', 'min' => 20],
+            
             [['stelefono'], 'string', 'max' => 15],
+            
+            [['path'], 'string', 'max' => 25],
+
             [['sestado'], 'string', 'max' => 1],
+
         ];
     }
 
@@ -47,12 +59,13 @@ class Seventosocial extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'pkevento' => 'Pkevento',
-            'sdescripcion' => 'Sdescripcion',
-            'sdireccion' => 'Sdireccion',
-            'sfecha' => 'Sfecha',
-            'stelefono' => 'Stelefono',
-            'sestado' => 'Sestado',
+            'pkevento' => 'Identificador de evento',
+            'sdescripcion' => 'Descripcion del evento',
+            'sdireccion' => 'Direccion del evento',
+            'sfecha' => 'Fecha de realizacion',
+            'stelefono' => 'Telefono de contacto',
+            'sestado' => 'Estado del evento',
+            'smensaje' => 'Datos para el QR'
         ];
     }
 

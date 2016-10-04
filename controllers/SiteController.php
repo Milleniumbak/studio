@@ -58,6 +58,8 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
+        Yii::warning("Pase antes del error");
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             // si inicia session correctamente > enviamos a la pagina inicial

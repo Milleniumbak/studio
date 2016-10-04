@@ -19,7 +19,7 @@ class SusuarioSearch extends Susuario
     {
         return [
             [['pkusuario', 'stipousuario'], 'integer'],
-            [['snombre', 'sapellido', 'semail', 'stelefono', 'spassword', 'sestado'], 'safe'],
+            [['snombre', 'sapellido', 'semail', 'stelefono', 'spassword', 'sestado', 'username'], 'safe'],
         ];
     }
 
@@ -66,6 +66,7 @@ class SusuarioSearch extends Susuario
         $query->andFilterWhere(['like', 'snombre', $this->snombre])
             ->andFilterWhere(['like', 'sapellido', $this->sapellido])
             ->andFilterWhere(['like', 'semail', $this->semail])
+            ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'stelefono', $this->stelefono])
             ->andFilterWhere(['like', 'spassword', $this->spassword])
             ->andFilterWhere(['like', 'sestado', $this->sestado]);

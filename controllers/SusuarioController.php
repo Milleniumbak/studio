@@ -8,7 +8,7 @@ use app\models\SusuarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\Simgusuario;
 /**
  * SusuarioController implements the CRUD actions for Susuario model.
  */
@@ -43,7 +43,10 @@ class SusuarioController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    public function actionUploadimg(){
+        $model = new Simgusuario();
+        return $this->render('uploadimg', ['model' =>$model ]);
+    }
     /**
      * Displays a single Susuario model.
      * @param integer $id
@@ -84,10 +87,13 @@ class SusuarioController extends Controller
      * @return mixed
      */
     public function actionUpdate($id)
-    { me falta esto en aqui
+    {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->stipousuario = 1;
+            $model->sestado = "T";
+            $model->save();
             return $this->redirect(['view', 'id' => $model->pkusuario]);
         } else {
             return $this->render('update', [

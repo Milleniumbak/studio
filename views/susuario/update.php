@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Susuario */
-
 $this->title = 'Update Susuario: ' . $model->pkusuario;
 $this->params['breadcrumbs'][] = ['label' => 'Susuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->pkusuario, 'url' => ['view', 'id' => $model->pkusuario]];
