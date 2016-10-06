@@ -2,37 +2,40 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+/*
+    renderizar la fecha en la vista
+                'attribute' => 'birth_date',
+                'format' => ['date', 'dd-MM-Y'],
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Simgusuario */
 
-$this->title = $model->pkimgusuario;
-$this->params['breadcrumbs'][] = ['label' => 'Simgusuarios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+ */
+
 ?>
 <div class="simgusuario-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->pkimgusuario], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->pkimgusuario], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'pkimgusuario',
-            'fkusuario',
-            'path',
-            'fechaing',
+            // la fotografia
+            [
+                'attribute' => 'image',
+                'value'     =>  Yii::getAlias('@web')
+                                .'upload/faces/'
+                                .$model->fkusuario 
+                                .'/' . $model->path,
+                  'format'    => ['image',['width'=>'200','height'=>'200']],
+            ],
         ],
     ]) ?>
-
+    <p style="text-align: center;">
+        <?= Html::a('Eliminar', ['delete', 'id' => $model->pkimgusuario], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Esta seguro de eliminar la fotografia?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
 </div>
+
+

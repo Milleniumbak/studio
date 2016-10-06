@@ -26,6 +26,7 @@ use Yii;
 class Susuario extends \yii\db\ActiveRecord
 {
     public $password_repeat;
+
     /**
      * @inheritdoc
      */

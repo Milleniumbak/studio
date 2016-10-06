@@ -63,6 +63,18 @@ class Iuser implements IdentityInterface
         return $this->usuario->authkey;
     }
 
+    /**
+     * Metodo que devuelve el tipo de usuario
+     * @return [entero] Devuelve un numero entero
+     */
+    public function getTipoUsuario(){
+        return $this->usuario->stipousuario;
+    }
+
+    /**
+     * Devuelve el nombre de usuario
+     * @return [String] Nombre de usuario
+     */
     public function getUsername(){
         return $this->usuario->username;
     }

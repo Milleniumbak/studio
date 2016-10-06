@@ -5,9 +5,7 @@ use kartik\widgets\FileInput;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-
-$this->title = 'Subir imagenes para deteccion de facial';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Cargar imagenes de su rostro';
 ?>
 <div class="susuario-uploadimg">
 

@@ -12,6 +12,7 @@ use app\models\Simgusuario;
  */
 class SimgusuarioSearch extends Simgusuario
 {
+
     /**
      * @inheritdoc
      */
@@ -39,9 +40,9 @@ class SimgusuarioSearch extends Simgusuario
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $pkusuario)
     {
-        $query = Simgusuario::find();
+        $query = Simgusuario::find()->where(['fkusuario' => $pkusuario]);
 
         // add conditions that should always apply here
 

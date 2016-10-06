@@ -2,10 +2,8 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update Susuario: ' . $model->pkusuario;
-$this->params['breadcrumbs'][] = ['label' => 'Susuarios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->pkusuario, 'url' => ['view', 'id' => $model->pkusuario]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Actualizar Perfil';
+
 ?>
 <div class="susuario-update">
 

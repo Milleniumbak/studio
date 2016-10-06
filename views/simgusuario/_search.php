@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\SimgusuarioSearch */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="simgusuario-search">
@@ -14,10 +11,6 @@ use yii\widgets\ActiveForm;
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
-
-    <?= $form->field($model, 'pkimgusuario') ?>
-
-    <?= $form->field($model, 'fkusuario') ?>
 
     <?= $form->field($model, 'path') ?>
 

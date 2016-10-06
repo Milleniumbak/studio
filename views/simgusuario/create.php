@@ -3,12 +3,8 @@
 use yii\helpers\Html;
 
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Simgusuario */
+$this->title = 'Subir Fotografia';
 
-$this->title = 'Create Simgusuario';
-$this->params['breadcrumbs'][] = ['label' => 'Simgusuarios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="simgusuario-create">
 

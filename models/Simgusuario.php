@@ -17,6 +17,13 @@ use Yii;
 class Simgusuario extends \yii\db\ActiveRecord
 {
     /**
+     * Esta es la imagen donde se cargara
+     * @var [image]
+     */
+    public $image;
+
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -30,11 +37,8 @@ class Simgusuario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fkusuario'], 'required'],
-            [['fkusuario'], 'integer'],
-            [['fechaing'], 'safe'],
-            [['path'], 'string', 'max' => 50],
-            [['fkusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Susuario::className(), 'targetAttribute' => ['fkusuario' => 'pkusuario']],
+            [['image'], 'safe'], 
+            [['image'], 'file', 'extensions' => 'jpg, png' ],
         ];
     }
 
@@ -46,8 +50,9 @@ class Simgusuario extends \yii\db\ActiveRecord
         return [
             'pkimgusuario' => 'Pkimgusuario',
             'fkusuario' => 'Fkusuario',
-            'path' => 'Path',
-            'fechaing' => 'Fechaing',
+            'path' => 'Nombre de Fotografia',
+            'fechaing' => 'Fecha de Subida',
+            'image' => 'Fotografia',
         ];
     }
 
