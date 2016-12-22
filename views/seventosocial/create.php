@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Evento Social';
-$this->params['breadcrumbs'][] = ['label' => 'Seventosocials', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Eventos Sociales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="seventosocial-create">

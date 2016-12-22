@@ -45,14 +45,7 @@ class SeventosocialController extends Controller
         ]);
     }
     /**
-     * Metodo que genera un imagen en png con un codigo QR
-     * @return [type] [description]
-     */
-    public function actionGenerateqr($data){
-        return QrCode::png($data);
-    }
-    /**
-     * Displays a single Seventosocial model.
+     * Muestra un solo modelo del evento social.
      * @param integer $id
      * @return mixed
      */
@@ -64,7 +57,7 @@ class SeventosocialController extends Controller
     }
 
     /**
-     * Creates a new Seventosocial model.
+     * Crea un nuevo modelo del evento social
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -74,7 +67,9 @@ class SeventosocialController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->sestado = "T";
-             $model->save();
+            // internamente adiciono el id del usuario que lo crea
+            $model->fkusuario = Yii::$app->user->identity->getId();
+            $model->save();
             return $this->redirect(['view', 'id' => $model->pkevento]);
         } else {
             return $this->render('create', [
@@ -84,8 +79,8 @@ class SeventosocialController extends Controller
     }
 
     /**
-     * Updates an existing Seventosocial model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Actualiza un modelo ya existente
+     * Si se actualiza correctamente se redirecciona a la pagina 'view'
      * @param integer $id
      * @return mixed
      */
@@ -94,6 +89,8 @@ class SeventosocialController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // internamente adiciono el id del usuario que lo crea
+            $model->fkusuario = Yii::$app->user->identity->getId();
             $model->sestado = "T";
              $model->save();
             return $this->redirect(['view', 'id' => $model->pkevento]);
@@ -118,6 +115,14 @@ class SeventosocialController extends Controller
     }
 
     /**
+     * Metodo que genera un imagen en png con un codigo QR
+     * @return [type] [description]
+     */
+    public function actionGenerateqr($data){
+        return QrCode::png($data);
+    }
+
+    /**
      * Finds the Seventosocial model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
@@ -129,7 +134,7 @@ class SeventosocialController extends Controller
         if (($model = Seventosocial::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Pagina no encontrada!!');
         }
     }
 }

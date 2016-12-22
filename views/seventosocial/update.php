@@ -2,10 +2,9 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Modificacion de evento: ' . $model->pkevento;
-$this->params['breadcrumbs'][] = ['label' => 'Seventosocials', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->pkevento, 'url' => ['view', 'id' => $model->pkevento]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Evento Social';
+$this->params['breadcrumbs'][] = ['label' => 'Eventos Sociales', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Evento Social';
 ?>
 <div class="seventosocial-update">
 

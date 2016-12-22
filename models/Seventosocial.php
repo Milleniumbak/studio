@@ -15,6 +15,7 @@ use Yii;
  * @property string $sestado
  * @property string $smensaje
  * @property string $path
+ * @property integer $fkusuario
  *
  * @property Senvio[] $senvios
  * @property Simgevent[] $simgevents

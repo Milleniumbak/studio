@@ -8,7 +8,6 @@ use app\models\SimgusuarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 use yii\db\Expression;
 use yii\helpers\FileHelper;
 /**
@@ -66,40 +65,27 @@ class SimgusuarioController extends Controller
      */
     public function actionCreate()
     {
-
         $model = new Simgusuario();
 
         if($model->load(Yii::$app->request->post())){
-            //obtenemos la imagen que nos llega
-            $image = UploadedFile::getInstance($model, 'image');
-            
-            // obtenemos la extension
-            $ext = end((explode(".", $image->name)));
-            Yii::warning("nombre  : " . $image->name);
-
-
             $model->fkusuario = Yii::$app->user->identity->getId();
-            // generamos un nombre aleatorio de 20 caracteres
-            $model->path = Yii::$app->security->generateRandomString(20).".{$ext}";
-            
             $model->fechaing = new Expression('NOW()');
+
+            $image = $model->uploadImage();
             // Camino donde se guardara la imagen
             $path = Yii::getAlias('@webroot').
                     Yii::$app->params['uploadFaces'].
                     $model->fkusuario . '/';
-                    
-
-            // creamos el directorio
-            FileHelper:: createDirectory($path);
-
-            $path = $path . $model->path;
-
-            Yii::warning("Pase : " . $path);
-            Yii::warning("model path : " . $model->path);
 
             if($model->save()){
-                $image->saveAs($path);
-                Yii::warning("se guardo correctamente: ");
+                if($image !== false){
+                    // creamos el directorio
+                    FileHelper::createDirectory($path);
+                    $path = $path . $model->path;
+
+                    $image->saveAs($path);
+                }
+
                 return $this->redirect(['view', 'id'=>$model->pkimgusuario]);
             }else{
                 // Error al guardar la imagen
@@ -108,7 +94,8 @@ class SimgusuarioController extends Controller
 
         }else{
             return $this->render('create', ['model' => $model]);
-        }
+        }     
+
     }
 
     /**

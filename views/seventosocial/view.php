@@ -3,11 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
-/* @var $this yii\web\View */
-/* @var $model app\models\Seventosocial */
 
-$this->title = $model->pkevento;
-$this->params['breadcrumbs'][] = ['label' => 'Seventosocials', 'url' => ['index']];
+$this->title = "Evento Social";
+$this->params['breadcrumbs'][] = ['label' => 'Eventos Sociales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="seventosocial-view">
@@ -24,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    
+
     <div style="text-align: center">
             <img 
                 src="<?= Url::to(['seventosocial/generateqr', 'data' => "$model->smensaje"])?>" />

@@ -21,10 +21,11 @@ use kartik\widgets\FileInput;
     			'pluginOptions'	=>[
     				'allowedFileExtensions'=>['jpg','png'],
     				'showCaption' => false,
-					'showRemove' => false,
-					'showUpload' => false,
+					'showRemove'  => false,
+					'showUpload'  => false,
+                    'maxFileSize' => 5000,
 			        'browseClass' => 'btn btn-primary btn-block',
-			        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+			        'browseIcon'  => '<i class="glyphicon glyphicon-camera"></i> ',
 			        'browseLabel' =>  'Seleccione fotografia',
     							  ]
     		]);

@@ -12,9 +12,12 @@
         'items' => [
             ['label' => 'Inicio', 'url' => ['/site/index']],
             ['label' => 'Perfil', 'url' => ['/susuario/update', 'id'=> Yii::$app->user->identity->getId()]],
-            ['label' => 'Deteccion Facial', 'url' => ['/simgusuario/index', 'pkusuario' => Yii::$app->user->identity->getId()]],
-        
+
+            !$isFotografo ? (['label' => 'Deteccion Facial', 'url' => ['/simgusuario/index', 'pkusuario' => Yii::$app->user->identity->getId()]]
+                ) : (""),
+            
             $isFotografo ? (
+
             ['label' => 'Evento Social', 'url' => ['/seventosocial/index']]) : (""),
 
             Yii::$app->user->isGuest ? (

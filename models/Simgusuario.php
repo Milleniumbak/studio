@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "simgusuario".
  *
@@ -16,6 +16,7 @@ use Yii;
  */
 class Simgusuario extends \yii\db\ActiveRecord
 {
+    // upload_max_filesize verificar esta propiedad en php.ini si no guarda la imagen
     /**
      * Esta es la imagen donde se cargara
      * @var [image]
@@ -55,7 +56,27 @@ class Simgusuario extends \yii\db\ActiveRecord
             'image' => 'Fotografia',
         ];
     }
+    /**
+     * Sube la fotografia al servidor
+     * @return [type] [description]
+     */
+    public function uploadImage(){
+        //obtenemos la imagen que nos llega
+        $image = UploadedFile::getInstance($this, 'image');
+    
+        if (empty($image)) {
+            Yii::warning("imagen falsse");
+            return false;
+        }
 
+        // obtenemos la extension
+        $ext = end((explode(".", $image->name)));
+        $ext = strtolower($ext);
+        // generamos un nombre aleatorio de 20 caracteres
+        $this->path = Yii::$app->security->generateRandomString(20).".{$ext}";
+
+        return $image;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
