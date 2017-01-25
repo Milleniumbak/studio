@@ -18,6 +18,8 @@ use kartik\widgets\FileInput;
 	
 	<?= $form->field($model, 'path')->hiddenInput()->label(false)?>
 
+    <?= $form->field($model, 'estado')->hiddenInput()->label(false)?>
+
 	<?php echo $form->field($model, 'image[]')->widget(FileInput::classname(), 
 			[
     			'options'		=>	[
@@ -36,7 +38,7 @@ use kartik\widgets\FileInput;
     							]
     		]);
 	?>
-
+    
 	<?php 
 		/*echo $form->field($model, 'image')->widget(FileInput::classname(), 
 			[

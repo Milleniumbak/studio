@@ -19,7 +19,7 @@ use yii\widgets\DetailView;
             // la fotografia
             [
                 'attribute' => 'image',
-                'value'     =>  Yii::getAlias('@web')
+                'value'     =>  Yii::getAlias('@web').'/'
                                 .'upload/faces/'
                                 .$model->fkusuario 
                                 .'/' . $model->path,

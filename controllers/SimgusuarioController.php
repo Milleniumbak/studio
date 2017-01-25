@@ -76,7 +76,7 @@ class SimgusuarioController extends Controller
             $path = Yii::getAlias('@webroot').
                     Yii::$app->params['uploadFaces'].
                     $model->fkusuario . '/';
-
+            $model->estado = "P";
             if($model->save()){
                 if($image !== false){
                     // creamos el directorio

@@ -30,6 +30,7 @@ use kartik\widgets\FileInput;
     							  ]
     		]);
 	?>
+    <?= $form->field($model, 'estado')->hiddenInput()->label(false)?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Subir' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

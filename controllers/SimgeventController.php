@@ -41,7 +41,7 @@ class SimgeventController extends Controller
     {
         $searchModel = new SimgeventSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $fkevent);
-        Yii::warning("pase index action de imgen");
+        //Yii::warning("pase index action de imgen");
         $model = Seventosocial::findOne(['pkevento' => $fkevent]);
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -79,7 +79,7 @@ class SimgeventController extends Controller
         if($model->load(Yii::$app->request->post())){
             $model->fkevent = $fkevent;
             $model->fechaing = new Expression('NOW()');
-
+            $model->estado = "P";
             // devuelve un array de imagenes
             $images = $model->uploadImage();
 
@@ -91,7 +91,7 @@ class SimgeventController extends Controller
                 $mImg = new Simgevent();
                 $mImg->fkevent = $fkevent;
                 $mImg->fechaing = new Expression('NOW()');
-                
+                $mImg->estado = "P";
                 // Camino donde se guardara las imagenes
                 $path = Yii::getAlias('@webroot').
                         Yii::$app->params['uploadEvents'].
