@@ -30,24 +30,6 @@ class SusuarioController extends Controller
     }
 
     /**
-     * Lists all Susuario models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new SusuarioSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-    public function actionUploadimg(){
-        $model = new Simgusuario();
-        return $this->render('uploadimg', ['model' =>$model ]);
-    }
-    /**
      * Displays a single Susuario model.
      * @param integer $id
      * @return mixed
