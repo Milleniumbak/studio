@@ -25,4 +25,5 @@ $this->title = 'Lista de Fotografias subidas';
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+</div>

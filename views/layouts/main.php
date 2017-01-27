@@ -8,7 +8,6 @@ use app\assets\AppAsset;
 use app\assets\GalleryAsset;
 
 AppAsset::register($this);
-GalleryAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

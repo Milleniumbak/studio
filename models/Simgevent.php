@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\web\UploadedFile;
+use yii2mod\cart\models\CartItemInterface;
+
 /**
  * This is the model class for table "simgevent".
  *
@@ -15,14 +17,15 @@ use yii\web\UploadedFile;
  * @property Seventosocial $fkevent0
  * @property Sscanner[] $sscanners
  */
-class Simgevent extends \yii\db\ActiveRecord
+class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
 {
+    //Ademas esta es la fotografia que se implementara como producto de carrito
     /**
      * Esta es la fotografia que se cargara
      * @var [type]
      */
     public $image;
-
+    public $price = 3;
     /**
      * @inheritdoc
      */
@@ -53,6 +56,7 @@ class Simgevent extends \yii\db\ActiveRecord
             'path' => 'Nombre de fotografia',
             'fechaing' => 'Fecha de subida',
             'image' => 'Fotografia',
+            'price' => 'Precio (Bs.)'
         ];
     }
     
@@ -73,24 +77,7 @@ class Simgevent extends \yii\db\ActiveRecord
     
         return $image;
     }
-    /*
-        //obtenemos la imagen que nos llega
-        $image = UploadedFile::getInstance($this, 'image');
-    
-        if (empty($image)) {
-            Yii::warning("imagen falsse");
-            return false;
-        }
 
-        // obtenemos la extension
-        $ext = end((explode(".", $image->name)));
-        $ext = strtolower($ext);
-        // generamos un nombre aleatorio de 20 caracteres
-        $this->path = Yii::$app->security->generateRandomString(20).".{$ext}";
-
-        return $image;    
-
-     */    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -106,4 +93,21 @@ class Simgevent extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Sscanner::className(), ['fkimgevent' => 'pkimgevent']);
     }
+
+    // metodos que se implementará para el carrito de compras
+    public function getPrice()
+    {   // el precio sera 4 bs por defecto
+        return $this->price;
+    }
+
+    public function getLabel()
+    {
+        return $this->path;
+    }
+
+    public function getUniqueId()
+    {
+        return $this->pkimgevent;
+    }
+
 }

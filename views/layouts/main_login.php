@@ -1,7 +1,7 @@
 <?php 
     use yii\bootstrap\Nav;
     use yii\helpers\Html;
-
+    use  yii\helpers\Url;
     $isFotografo = false;
     if(Yii::$app->user->identity->getTipoUsuario() == Yii::$app->params['usrFotografo']){
         $isFotografo = true;
@@ -18,7 +18,8 @@
             
             $isFotografo ? (
 
-            ['label' => 'Evento Social', 'url' => ['/seventosocial/index']]) : (""),
+            ['label' => 'Evento Social', 'url' => ['/seventosocial/index']]) : (
+            ['label' => 'Galeria de imagenes', 'url' => ['/sscanner/index']]),
 
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
@@ -31,7 +32,22 @@
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+
+            Yii::$app->user->isGuest ? (
+                ""
+            ) : (
+                '<li role="presentation" >'.
+                    '<a href="' . Url::toRoute(['sbuyphoto/formulario']) . '">'.
+                        '<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">'.
+                        '</span> Carrito '.
+                        
+                        '<span class="badge">' . Yii::$app->cart->getCount() . 
+                        '</span>'.
+
+                    '</a>'.
+                '</li>'
+            ),
         ],
     ]);
  ?>

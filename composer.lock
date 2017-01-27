@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e066070c8d105803174ffc81432e7f8",
+    "content-hash": "c87d5772c2495383642f65e49d8b6de8",
     "packages": [
         {
             "name": "2amigos/yii2-qrcode-helper",
@@ -1580,6 +1580,49 @@
                 "mailer"
             ],
             "time": "2016-12-29T10:02:40+00:00"
+        },
+        {
+            "name": "yii2mod/yii2-cart",
+            "version": "1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2mod/yii2-cart.git",
+                "reference": "58b88f5047c7d6e0bc7ad7753f19cf45c3636111"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2mod/yii2-cart/zipball/58b88f5047c7d6e0bc7ad7753f19cf45c3636111",
+                "reference": "58b88f5047c7d6e0bc7ad7753f19cf45c3636111",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~1.7"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii2mod\\cart\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Semenov",
+                    "email": "disemx@gmail.com"
+                },
+                {
+                    "name": "Igor Chepurnoy",
+                    "email": "igorzfort@gmail.com"
+                }
+            ],
+            "description": "Yii2 Shopping cart",
+            "time": "2016-11-22T12:20:39+00:00"
         },
         {
             "name": "yiisoft/yii2",
