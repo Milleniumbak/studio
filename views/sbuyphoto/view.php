@@ -22,5 +22,4 @@ $this->title = 'Fotografias a comprar :: ';
 <p>
     <?= Html::a('<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Pagar con paypal', ['sbuyphoto/pay'], ['class' => 'btn btn-warning']) ?>
 </p>
-
 </div>

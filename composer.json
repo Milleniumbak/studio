@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "kartik-v/yii2-widgets": "*",
         "2amigos/yii2-qrcode-helper": "~1.0",
-        "yii2mod/yii2-cart": "*"
+        "yii2mod/yii2-cart": "*",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

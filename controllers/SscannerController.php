@@ -30,7 +30,7 @@ class SscannerController extends Controller
     }
 
     /**
-     * Lists all Sscanner models.
+     * Lista las imagenes que se van a mostrar en la galeria.
      * @return mixed
      */
     public function actionIndex()
@@ -48,15 +48,9 @@ class SscannerController extends Controller
      * @param integer $fkimgevent Es el identificador primario de la imagen que se va comprar
      */
     public function actionAddshop($fkimgevent){
-        // accediendo al carro de compras
-        //$cart = \Yii::$app->cart;
-        // obtengo el producto : 
 
         if(($model = Simgevent::findOne($fkimgevent)) !== null){
-            Yii::warning("Antes de adicionar producto");
             Yii::$app->cart->add($model);
-            Yii::warning("nro de items : " . Yii::$app->cart->getCount());
-
             return $this->redirect(['index']);
         }else{
             Yii::warning("No se encontro ningun producto");
@@ -111,19 +105,6 @@ class SscannerController extends Controller
                 'model' => $model,
             ]);
         }
-    }
-
-    /**
-     * Deletes an existing Sscanner model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**
