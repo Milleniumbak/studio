@@ -6,7 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\components\paypal;
+use app\common\components\paypal;
 /**
  * Controlador para la compra de fotografias
  */
@@ -43,7 +43,29 @@ class SbuyphotoController extends Controller
     public function actionPay(){
         // aqui llamar al componente de paypal
         $paypal = new paypal();
-        $paypal->procesarPago($amount,$description, $imgEvents)
+        // es un array de fotos de evento
+        $imgEvents = Yii::$app->cart->getItems();
+        $total = Yii::$app->cart->getAttributeTotal('price');
+        $response = $paypal->procesarPago($total, $imgEvents, "COMPRA DE FOTOGRAFIAS");
+
+        $url = $response->links[1]->href;
+        //echo 'Redirect user here:'.$url.'<br/><br/>';
+        //var_dump($response);
+
+        header('Location: '.$url);
+        die();
+        //return $this->render('view', ['total'=>$total]);
+    }
+    /**
+     * Aqui llegara la respuesta de paypal
+     */
+    public function actionResponse($success){
+        $total = 0;
+        if($success == true){
+            $total = 0;
+        }else{
+            $total = -1;
+        }
         return $this->render('view', ['total'=>$total]);
     }
 }
