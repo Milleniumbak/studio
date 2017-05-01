@@ -6,11 +6,11 @@ use \yii\web\IdentityInterface;
 
 class Iuser implements IdentityInterface
 {
-
+    # actualizacion de interfaz de usuario
     public $usuario;
 
     public function __construct(){
-        
+
     }
     // implementaciones de la interface --------------------------------
     /**
@@ -93,7 +93,7 @@ class Iuser implements IdentityInterface
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
-    {   
+    {
         return $this->usuario->spassword === $password;
     }
 }
