@@ -6,10 +6,9 @@ use kartik\widgets\DatePicker;
 use app\models\Stipoevento;
 use kartik\select2\select2;
 use yii\helpers\ArrayHelper;
-
 ?>
-
-<div class="seventosocial-form">
+<!-- aqui se va a configurar la compra en el modal -->
+<div class="scompra-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -29,8 +28,6 @@ use yii\helpers\ArrayHelper;
         ]
     )
     ?>
-
-    <?= $form->field($model, 'sprecioxfoto')->hiddenInput(['value'=>"5"])->label(false)?>
 
     <?= $form->field($model, 'sdireccion')->textInput(['maxlength' => true]) ?>
 

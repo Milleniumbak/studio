@@ -44,7 +44,7 @@ class Susuario extends \yii\db\ActiveRecord
             [['stipousuario'], 'integer'],
 
             [['snombre', 'sapellido'], 'string', 'max' => 50],
-            
+
             [['semail'], 'string', 'max' => 25],
             [['semail'], 'email'],
             [['semail'], 'required'],
@@ -84,7 +84,7 @@ class Susuario extends \yii\db\ActiveRecord
             'semail' => 'Correo Electronico',
             'stelefono' => 'Telefono',
             'spassword' => 'Contraseña',
-            'stipousuario' => 'Tipo de usuario',
+            'stipousuario' => 'Tipo de suscripcion',
             'sestado' => 'Estado',
             'password_repeat' => 'Repita contraseña',
             'username'  => 'Nombre de usuario',

@@ -51,7 +51,6 @@ class SusuarioController extends Controller
         $model = new Susuario();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->stipousuario = 1;
             $model->sestado = "T";
             $model->save();
             return $this->redirect(['view', 'id' => $model->pkusuario]);
@@ -73,7 +72,6 @@ class SusuarioController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->stipousuario = 1;
             $model->sestado = "T";
             $model->save();
             return $this->redirect(['view', 'id' => $model->pkusuario]);

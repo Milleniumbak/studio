@@ -4,7 +4,6 @@ namespace app\models;
 
 use Yii;
 use yii\web\UploadedFile;
-use yii2mod\cart\models\CartItemInterface;
 
 /**
  * This is the model class for table "simgevent".
@@ -17,7 +16,7 @@ use yii2mod\cart\models\CartItemInterface;
  * @property Seventosocial $fkevent0
  * @property Sscanner[] $sscanners
  */
-class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
+class Simgevent extends \yii\db\ActiveRecord
 {
     //Ademas esta es la fotografia que se implementara como producto de carrito
     /**
@@ -25,7 +24,6 @@ class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
      * @var [type]
      */
     public $image;
-    public $price = 3;
     /**
      * @inheritdoc
      */
@@ -40,7 +38,7 @@ class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
     public function rules()
     {
         return [
-            [['image'], 'safe'], 
+            [['image'], 'safe'],
             [['image'], 'file', 'extensions' => 'jpg, png', 'maxFiles' => 20],
         ];
     }
@@ -56,10 +54,9 @@ class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
             'path' => 'Nombre de fotografia',
             'fechaing' => 'Fecha de subida',
             'image' => 'Fotografia',
-            'price' => 'Precio (Bs.)'
         ];
     }
-    
+
     /**
      * Sube la fotografia al servidor
      * @return [type] [description]
@@ -67,14 +64,14 @@ class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
     public function uploadImage(){
         //obtenemos la imagen que nos llega
         $image = UploadedFile::getInstances($this, 'image');
-        
+
         if (empty($image)) {
             Yii::warning("imagen falsse");
             return false;
         }else{
             Yii::warning("Nro de imagenes : " . count($image));
         }
-    
+
         return $image;
     }
 
@@ -94,20 +91,5 @@ class Simgevent extends \yii\db\ActiveRecord implements CartItemInterface
         return $this->hasMany(Sscanner::className(), ['fkimgevent' => 'pkimgevent']);
     }
 
-    // metodos que se implementará para el carrito de compras
-    public function getPrice()
-    {   // el precio sera 4 bs por defecto
-        return $this->price;
-    }
-
-    public function getLabel()
-    {
-        return $this->path;
-    }
-
-    public function getUniqueId()
-    {
-        return $this->pkimgevent;
-    }
 
 }

@@ -16,10 +16,13 @@ use Yii;
  * @property string $smensaje
  * @property string $path
  * @property integer $fkusuario
- *
+ * @property integer $fktipoevento
+ * @property numeric sprecioxfoto
  * @property Senvio[] $senvios
  * @property Simgevent[] $simgevents
  * @property Simgqr[] $simgqrs
+ * @property Stipoevento $fktipoevento0
+ * @property Susuario $fkusuario0
  */
 class Seventosocial extends \yii\db\ActiveRecord
 {
@@ -40,17 +43,22 @@ class Seventosocial extends \yii\db\ActiveRecord
             [['sfecha'], 'safe'],
             [['sfecha'], 'required'],
 
+            [['sprecioxfoto'], "number"],
+
             [['sdescripcion', 'sdireccion', 'smensaje'], 'string', 'max' => 50],
             [['sdescripcion', 'sdireccion', 'smensaje'], 'required'],
 
             [['smensaje'], 'string', 'min' => 20],
-            
+
             [['stelefono'], 'string', 'max' => 15],
-            
+
             [['path'], 'string', 'max' => 25],
 
             [['sestado'], 'string', 'max' => 1],
 
+            [['fktipoevento'], 'exist', 'skipOnError' => true, 'targetClass' => Stipoevento::className(), 'targetAttribute' => ['fktipoevento' => 'pktipoevento']],
+
+            [['fkusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Susuario::className(), 'targetAttribute' => ['fkusuario' => 'pkusuario']],
         ];
     }
 
@@ -66,7 +74,9 @@ class Seventosocial extends \yii\db\ActiveRecord
             'sfecha' => 'Fecha de realizacion',
             'stelefono' => 'Telefono de contacto',
             'sestado' => 'Estado del evento',
-            'smensaje' => 'Datos para el QR'
+            'smensaje' => 'Datos para el QR',
+            'fktipoevento' => 'Tipo de evento social',
+            'sprecioxfoto' => 'Precio por fotografia (Bs.-)',
         ];
     }
 
@@ -78,6 +88,13 @@ class Seventosocial extends \yii\db\ActiveRecord
         return $this->hasMany(Senvio::className(), ['fkevento' => 'pkevento']);
     }
 
+    public function getFktipoevento0(){
+        return $this->hasOne(Stipoevento::className(), ['pktipoevento' => 'fktipoevento']);
+    }
+
+    public function getFkusuario0(){
+      return $this->hasOne(Susuario::className(), ['pkusuario' => 'fkusuario']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

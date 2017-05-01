@@ -2,6 +2,7 @@
 // mejor usar la exrtension de carrito de compra
 // https://github.com/omnilight/yii2-shopping-cart
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
@@ -16,56 +17,47 @@ $this->title = 'Galeria de fotografias';
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            
+
             [ // esta es la imagen que se intenta mostrar
                 'attribute' => 'Fotografia',
                 'format' => 'html',
                 'value' => function ($model) {
                     $imgEvent = $model->getFkimgevent0()->one();
                     return Html::img(
-                            Yii::getAlias('@web').'/'.'upload/events/'                               .$imgEvent->fkevent 
-                                .'/' . $imgEvent->path,
+                            Yii::getAlias('@web').'/'.'upload/events/'.$imgEvent->fkevent
+                                .'/water-' . $imgEvent->path,
                             ['width' => '100px']
                         );
                 },
             ],
-            
+
             [
                 'attribute' => 'fkimgevent',
                 'value'     => 'fkimgevent0.path',
             ],
 
             'fechaing',
-            // columna 
+            // nueva columna
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{addcart}',
-                'controller' => 'sscannerController',
+                'template' => '{dialogo}',
+                'controller' => 'sbuyphotoController',
                 'buttons' => [
-                    'addcart' => function ($url, $model) { 
-                        return Html::a('<span class="glyphicon glyphicon-credit-card
-"></span>', ['sscanner/addshop',
-             'fkimgevent' => $model->fkimgevent
-            ], [
-                    'title' => 'Adicionar compra',
-                    ]);
-                }
-              ],
-            ],        
+                    'dialogo' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-shopping-cart"></span>',
+                            [
+                                'sbuyphoto/form',
+                                'fkimgevent' => $model->fkimgevent
+                            ],
+                            [
+                                'title' => 'Adicionar compra'
+                            ]
+                        );
+                    },
+                            ],
+            ],
+            // fin de la columna
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>
-
-<!-- El modal que se mostrara cuando se haga clic -->
-<div id="myModal" class="modal">
-
-  <!-- The Close Button -->
-  <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
-
-  <!-- Modal Content (The Image) -->
-  <img class="modal-content" id="img01">
-
-  <!-- Modal Caption (Image Text) -->
-  <div id="caption"></div>
-</div>
-

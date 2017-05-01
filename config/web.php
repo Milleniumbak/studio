@@ -15,10 +15,10 @@ $config = [
             // Estoy deshabilitando el guardar el carrito en el servidor
             /*'storageClass' => [
                 'class' => 'yii2mod\cart\storage\DatabaseStorage',
-                // you can also override some properties 
+                // you can also override some properties
                 'deleteIfEmpty' => true
             ]*/
-        ],    
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'STUDIO2045',
@@ -61,7 +61,7 @@ $config = [
     ],
     'params' => $params,
 ];
-
+/* habilitar para el modo depurador
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
@@ -74,5 +74,5 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
     ];
 }
-
+*/
 return $config;

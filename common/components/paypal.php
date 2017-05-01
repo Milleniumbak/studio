@@ -46,9 +46,11 @@ class paypal extends Component
     }
     /**
      * Metodo que procesa el pago mediante paypal
-     * @param float $montoTotal 
+     * @param float $montoTotal
+     * @param array $items de tipo compraimpresa,
+     * @param string $descCompra descripcion de la compra
      */
-    public function procesarPago($montoTotal, $imgEvents, $descCompra)
+    public function procesarPago($montoTotal, $comprasimpresas, $descCompra)
     {
 
         $apiContext = new \PayPal\Rest\ApiContext(
@@ -65,10 +67,10 @@ class paypal extends Component
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
 
-        $itemsArray = array();        
+        $itemsArray = array();
         // adicionamos todos los items
-        foreach ($imgEvents as $key => $value) {
-            $value = $this->addItem($value->path, 1, $value->price);
+        foreach ($comprasimpresas as $key => $value) {
+            $value = $this->addItem($value->destipocompra, 1, $value->precio);
             array_push($itemsArray, $value);
         }
         $itemList = new ItemList();
@@ -95,7 +97,7 @@ class paypal extends Component
         // ### Transaction
         // A transaction defines the contract of a
         // payment - what is the payment for and who
-        // is fulfilling it. 
+        // is fulfilling it.
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
@@ -103,11 +105,11 @@ class paypal extends Component
             ->setInvoiceNumber(uniqid());
 
     // ### Redirect urls
-    // Set the urls that the buyer must be redirected to after 
+    // Set the urls that the buyer must be redirected to after
     // payment approval/ cancellation.
     //$baseUrl = getBaseUrl();
     $redirectUrls = new RedirectUrls();
-    
+
     $redirectUrls->setReturnUrl("http://siagro.ddns.net/index.php?r=sbuyphoto/response&success=true")
         ->setCancelUrl('http://siagro.ddns.net/index.php?r=sbuyphoto/response&success=true');
 
@@ -148,5 +150,5 @@ class paypal extends Component
     return $payment;
 
     }
-  
+
 }

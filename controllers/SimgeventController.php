@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Expression;
 use yii\helpers\FileHelper;
-
+use yii\imagine\Image;
 
 /**
  * SimgeventController implements the CRUD actions for Simgevent model.
@@ -99,7 +99,7 @@ class SimgeventController extends Controller
 
                 yii::warning("file : " . $images[$i]);
                 $img = $images[$i];
-                
+
                 // obtenemos la extension
                 $ext = end((explode(".", $images[$i]->name)));
                 $ext = strtolower($ext);
@@ -113,23 +113,58 @@ class SimgeventController extends Controller
                     if($img !== false){
                         // creamos el directorio
                         FileHelper::createDirectory($path);
+
+                        $camino = $path;
+                        //      directorio + nombre de fotografia
                         $path = $path . $mImg->path;
                         Yii::warning('camino : ' . $path);
 
+                        // guarda la imagen en el servidor
                         $img->saveAs($path);
+                        // aqui creamos la marca de agua
+                        $this->createMarcaAgua($camino, $mImg->path);
                     }
                 }
-            
+
             }
             return $this->redirect(
                         [
-                            'index', 
+                            'index',
                             'fkevent' => $fkevent]);
         }else{
             return $this->render('create', ['model' => $model]);
         }
     }
+    /**
+     * @param $path es la ubicacion de la imagen
+     */
+    private function createMarcaAgua($path, $name){
+        //Yii::$app->params['imgWatermark']
+        // generamos imagen en miniatura
+        //Image::thumbnail($path . $name, 120, 120)
+        //     ->save($path . 'thumb-' .$name , ['quality' => 50]);
 
+        # adicionamos marca de agua a la fotografia
+        Image::watermark(   $path . $name,
+                            Yii::getAlias('@webroot') . Yii::$app->params['imgWatermark'],
+                            [0, 0])
+            ->save($path . 'water-' .$name);
+    }
+    // esto de abajo se modifico en la api imagine, asi que modificarlo como esto
+    // public static function watermark($filename, $watermarkFilename, array $start = [0, 0])
+    // {
+    //     if (!isset($start[0], $start[1])) {
+    //         throw new InvalidParamException('$start must be an array of two elements.');
+    //     }
+    //     $img = static::getImagine()->open(Yii::getAlias($filename));
+    //     $watermark = static::getImagine()->open(Yii::getAlias($watermarkFilename));
+    //     // se aumentaron estas dos lineas para la marca de agua mas grande
+    //     $size      = $img->getSize();
+    //     $watermark->resize(new Box($size->getWidth(), $size->getHeight()));
+    //
+    //     $img->paste($watermark, new Point($start[0], $start[1]));
+    //     return $img;
+    // }
 
     /**
      * Deletes an existing Simgevent model.
@@ -139,25 +174,39 @@ class SimgeventController extends Controller
      */
     public function actionDelete($id)
     {
-        
+
         $model = $this->findModel($id);
 
         // segundo obtenemos el modelo evento social
         $moEvento = Seventosocial::findOne(['pkevento' => $model->fkevent]);
         if(isset($model)){ // variable definida
+            Yii::warning("eliminado la imagen evento: " . $path);
             $path = Yii::getAlias('@webroot').
                     Yii::$app->params['uploadEvents'].
-                    $model->fkevent . '/'. 
+                    $model->fkevent . '/'.
                     $model->path;
-
-            Yii::warning("eliminado la imagen evento: " . $path);
             @unlink($path);
+
+            // eliminamos el water image
+            $path = Yii::getAlias('@webroot').
+                    Yii::$app->params['uploadEvents'].
+                    $model->fkevent . '/water-'.
+                    $model->path;
+            @unlink($path);
+
+            // eliminamos la miniatura
+            /*$path = Yii::getAlias('@webroot').
+                    Yii::$app->params['uploadEvents'].
+                    $model->fkevent . '/thumb-'.
+                    $model->path;
+            @unlink($path);*/
+
             $model->delete();
         }
 
         return $this->redirect([
-                                'index', 
-                                'fkevent' => $model->fkevent, 
+                                'index',
+                                'fkevent' => $model->fkevent,
                                 'data' => $moEvento->sdescripcion,
                                 ]);
     }

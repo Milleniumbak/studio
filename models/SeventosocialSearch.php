@@ -36,13 +36,12 @@ class SeventosocialSearch extends Seventosocial
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
+     * @param integer es el id del usuario que esta conectado
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $pkUsr)
     {
         $query = Seventosocial::find();
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -61,6 +60,7 @@ class SeventosocialSearch extends Seventosocial
         $query->andFilterWhere([
             'pkevento' => $this->pkevento,
             'sfecha' => $this->sfecha,
+            'fkusuario' => $pkUsr,
         ]);
 
         $query->andFilterWhere(['like', 'sdescripcion', $this->sdescripcion])

@@ -44,21 +44,6 @@ class SscannerController extends Controller
         ]);
     }
     /**
-     * Adiciona una fotografia al carrito de compra
-     * @param integer $fkimgevent Es el identificador primario de la imagen que se va comprar
-     */
-    public function actionAddshop($fkimgevent){
-
-        if(($model = Simgevent::findOne($fkimgevent)) !== null){
-            Yii::$app->cart->add($model);
-            return $this->redirect(['index']);
-        }else{
-            Yii::warning("No se encontro ningun producto");
-            return $this->redirect(['index']);
-        }
-
-    }
-    /**
      * Displays a single Sscanner model.
      * @param integer $id
      * @return mixed

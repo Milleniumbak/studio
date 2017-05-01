@@ -37,8 +37,9 @@ class SeventosocialController extends Controller
     public function actionIndex()
     {
         $searchModel = new SeventosocialSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, Yii::$app->user->identity->getId());
+        // debemos de mostrar solo los eventos que creamos!!
+        Yii::warning("filtramos los eventos propios");
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

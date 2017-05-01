@@ -1,4 +1,5 @@
 <?php
+// este es donde sale el listado final antes de hacer clik pagar
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -8,12 +9,16 @@ $this->title = 'Fotografias a comprar :: ';
 ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
-<?php Pjax::begin(); ?>    
+<?php Pjax::begin(); ?>
 	<?php echo CartGrid::widget([
 	    'cartColumns' => [
 	    	['class' => 'yii\grid\SerialColumn'],
-	        'path',
-	        'price'
+            "destipocompra",
+            'fkimgevent0.path',
+            'fkdimension0.descripcion',
+            'fktipopapel0.descripcion',
+	        'cantidad',
+	        'precio'
 	    ]
 	]); ?>
 <?php Pjax::end(); ?>
