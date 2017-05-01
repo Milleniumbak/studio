@@ -1,5 +1,5 @@
 <?php
-// mejor usar la exrtension de carrito de compra
+// mejor usar la exrtension de carrito de compra esccane
 // https://github.com/omnilight/yii2-shopping-cart
 use yii\helpers\Html;
 use yii\helpers\Url;
