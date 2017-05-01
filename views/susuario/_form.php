@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Stipousuario;
-use kartik\select2\select2;
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 ?>
 

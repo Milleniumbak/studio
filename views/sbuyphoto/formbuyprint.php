@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use app\models\Stipopapel;
 use app\models\Sdimension;
-use kartik\select2\select2;
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 
 ?>

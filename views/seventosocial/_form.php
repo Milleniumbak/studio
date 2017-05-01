@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use app\models\Stipoevento;
-use kartik\select2\select2;
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 
 ?>
