@@ -33,12 +33,12 @@ use PayPal\Rest\ApiContext;
 
 class paypal extends Component
 {
+    public $moneda = "USD";
     // adiciona un item a paypal
-
     private function addItem($name, $cantidad, $precio){
         $item1 = new Item();
         $item1->setName($name)
-        ->setCurrency('USD')
+        ->setCurrency($this->moneda)
         ->setQuantity($cantidad)
         ->setPrice($precio);
 
@@ -46,11 +46,10 @@ class paypal extends Component
     }
     /**
      * Metodo que procesa el pago mediante paypal
-     * @param float $montoTotal
      * @param array $items de tipo compraimpresa,
      * @param string $descCompra descripcion de la compra
      */
-    public function procesarPago($montoTotal, $comprasimpresas, $descCompra)
+    public function procesarPago($comprasimpresas, $descCompra)
     {
 
         $apiContext = new \PayPal\Rest\ApiContext(
@@ -67,55 +66,58 @@ class paypal extends Component
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
 
+        // total de la compra
+        $subtotal = 0;
         $itemsArray = array();
         // adicionamos todos los items
         foreach ($comprasimpresas as $key => $value) {
-            $value = $this->addItem($value->destipocompra, 1, $value->precio);
-            array_push($itemsArray, $value);
+                            #addItem($name, $cantidad, $precio){
+            $producto = $this->addItem($value->destipocompra, $value->cantidad, $value->precio);
+            array_push($itemsArray, $producto);
+            $subtotal = $subtotal + ($value->cantidad * $value->precio);
         }
+
         $itemList = new ItemList();
         $itemList->setItems($itemsArray);
 
-        // ### Additional payment details
-        // Use this optional field to set additional
-        // payment information such as tax, shipping
-        // charges etc.
+        // ### opcionalmente se crea un objeto Details
+        // Es cuando tenemos un costo por el envio del producto
         $details = new Details();
-        $details->setShipping(0)
-            ->setTax(0)
-            ->setSubtotal(0);
+        $details->setSubtotal($subtotal);
+        # lo de abajo es opcional cuando tenemos
+        #$details->setShipping(0) costo por el envio
+        #$details->setTax(0); costo por el impuesto
 
         // ### Amount
-        // Lets you specify a payment amount.
+        // aqui especificamos los montos a pagar
         // You can also specify additional details
         // such as shipping, tax.
         $amount = new Amount();
-        $amount->setCurrency("USD")
-            ->setTotal($montoTotal)
+        $amount->setCurrency($moneda)
+            ->setTotal($subtotal)
             ->setDetails($details);
 
         // ### Transaction
-        // A transaction defines the contract of a
+        // definimos la transaccion
         // payment - what is the payment for and who
         // is fulfilling it.
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription($descCompra)
+            ->setDescription($descCompra) # descripcion de la compra
             ->setInvoiceNumber(uniqid());
 
-    // ### Redirect urls
-    // Set the urls that the buyer must be redirected to after
+    // ### Redireccionamiento de las urls
+    // Establecemos la url para que el comprador pueda ser redirigido despues
     // payment approval/ cancellation.
     //$baseUrl = getBaseUrl();
     $redirectUrls = new RedirectUrls();
 
-    $redirectUrls->setReturnUrl("http://siagro.ddns.net/index.php?r=sbuyphoto/response&success=true")
-        ->setCancelUrl('http://siagro.ddns.net/index.php?r=sbuyphoto/response&success=true');
+    $redirectUrls->setReturnUrl("http://desing.ddns.net/index.php?r=sbuyphoto/response");
+    $redirectUrls->setCancelUrl('http://siagro.ddns.net/index.php?r=sbuyphoto/response');
 
     // ### Payment
-    // A Payment Resource; create one using
-    // the above types and intent set to 'sale'
+    // Objeto a traves del cual se realizara el pago
     $payment = new Payment();
     $payment->setIntent("sale")
         ->setPayer($payer)
@@ -126,16 +128,15 @@ class paypal extends Component
         $request = clone $payment;
 
         // ### Create Payment
-        // Create a payment by calling the 'create' method
-        // passing it a valid apiContext.
-        // (See bootstrap.php for more on `ApiContext`)
-        // The return object contains the state and the
-        // url to which the buyer must be redirected to
-        // for payment approval
+        // Creamos el pago llamando al metodo Create
+        // pasando una apiContext valido.
+        // El objeto devuelto contiene el estado y
+        // la url al cual el comprador sera redirigido
+        // para la aprobacion del pago
         try {
             $payment->create($apiContext);
-        } catch (Exception $ex) {
-            ResultPrinter::printError("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", null, $request, $ex);
+        } catch (\PayPal\Exception\PPConnectionException $ex) {
+            ResultPrinter::printError("Pago creado con PayPal. Por favor, visite la URL para Aprobar.", "Payment", null, $request, $ex);
             exit(1);
         }
 
@@ -144,7 +145,7 @@ class paypal extends Component
         // the buyer to. Retrieve the url from the $payment->getApprovalLink()
         // method
         $approvalUrl = $payment->getApprovalLink();
-
+        voy por el minuto 15
         // ResultPrinter::printResult("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", "<a href='$approvalUrl' >$approvalUrl</a>", $request, $payment);
 
     return $payment;

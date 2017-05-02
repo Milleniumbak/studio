@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f3052597df2b146717e1286d7edbda31",
-    "content-hash": "790231fd0a3aa32080e5e596764ff791",
+    "hash": "13d652d14a8551aba91f73f50a9c4174",
+    "content-hash": "056d680e934176fb3394ebb199f01700",
     "packages": [
         {
             "name": "2amigos/yii2-qrcode-helper",
