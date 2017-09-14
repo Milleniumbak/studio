@@ -2,8 +2,8 @@
 
 return [
     'adminEmail' => 'limbertx@hotmail.com',
-    'usrCliente' => 2, // por el momento aqui configuramos el id del cliente
-    'usrFotografo' => 1, // aqui colocamos el id del fotografo id
+    'usrCliente' => 4, // por el momento aqui configuramos el id del cliente
+    'usrFotografo' => 2, // aqui colocamos el id del fotografo id
     'uploadFaces'   => '/upload/faces/',
     'uploadEvents'   => '/upload/events/',
     'imgWatermark'   => '/upload/watermark.png', // es la imagen con marca de agua
