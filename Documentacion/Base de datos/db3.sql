@@ -4,7 +4,7 @@
 /*  DBMS       : PostgreSQL 						*/
 /* ---------------------------------------------------- */
 
-/* Drop Sequences for Autonumber Columns */
+/* Drop Sequences for Autonumber Columns cambio para semestre-02-2017*/
 
 DROP SEQUENCE IF EXISTS senvio_pkenvio_seq
 ;
