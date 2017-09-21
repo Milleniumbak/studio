@@ -24,8 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <div style="text-align: center">
-            <img 
-                src="<?= Url::to(['seventosocial/generateqr', 'data' => "$model->smensaje"])?>" />
+        <img class="center-block img-responsive" src="<?= Url::to(['seventosocial/generateqr', 'data' => "$model->smensaje"])?>"                
     </div>
 
     <?= DetailView::widget([

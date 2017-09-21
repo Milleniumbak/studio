@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Srestgoogledrive;
 
 class SiteController extends Controller
 {
@@ -60,8 +61,16 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            // si inicia session correctamente > enviamos a la pagina inicial
-            return $this->goHome();
+            # si inicia session correctamente > enviamos a la pagina inicial
+            # primero creamos las credenciales para google
+            $google = new Srestgoogledrive();
+            $client = $google->connect_to_cloud();
+            if(is_null($client)){
+                Yii::Warning("no se encontraron credenciales redireccionando!!");
+                return $this->redirect(['simgevent/oauthocallback']);
+            }else{
+                return $this->goHome();
+            }
         }
         return $this->render('login', [
             'model' => $model,

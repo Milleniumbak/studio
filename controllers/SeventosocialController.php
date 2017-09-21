@@ -8,8 +8,8 @@ use app\models\SeventosocialSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use dosamigos\qrcode\QrCode;
-use dosamigos\qrcode\formats\MailTo;
+use Da\QrCode\QrCode;
+use Da\QrCode\Format\BookmarkFormat;
 /**
  * SeventosocialController implements the CRUD actions for Seventosocial model.
  */
@@ -120,7 +120,13 @@ class SeventosocialController extends Controller
      * @return [type] [description]
      */
     public function actionGenerateqr($data){
-        return QrCode::png($data);
+        //Yii::warning("entre a generateQR");
+        $qrCode = (new QrCode($data))
+                    ->setSize(500) 
+                    ->setMargin(5)
+                    ->useForegroundColor( 0, 0, 0);
+        header('Content-Type: '.$qrCode->getContentType());
+        return $qrCode->writeString();        
     }
 
     /**

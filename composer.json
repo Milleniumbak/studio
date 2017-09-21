@@ -20,11 +20,12 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "kartik-v/yii2-widgets": "*",
-        "2amigos/yii2-qrcode-helper": "~1.0",
         "yii2mod/yii2-cart": "*",
         "paypal/rest-api-sdk-php": "*",
         "kartik-v/yii2-grid": "@dev",
-        "yiisoft/yii2-imagine": "~2.0.0"
+        "yiisoft/yii2-imagine": "~2.0.0",
+        "2amigos/qrcode-library":"~1.1",
+        "google/apiclient": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

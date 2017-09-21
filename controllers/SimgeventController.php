@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 use yii\db\Expression;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
-
+use app\models\Srestgoogledrive;
 /**
  * SimgeventController implements the CRUD actions for Simgevent model.
  */
@@ -49,10 +49,9 @@ class SimgeventController extends Controller
             'data' => $model->sdescripcion,
             'fkevent' => $fkevent,
         ]);
-    }
-
+    }    
     /**
-     * Displays a single Simgevent model.
+     * Mostramos un modelo .
      * @param integer $id
      * @return mixed
      */
@@ -67,13 +66,31 @@ class SimgeventController extends Controller
     }
 
     /**
-     * Creates a new Simgevent model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Metodo que se utiliza cuando hay autenticacion con el servidor en la nube
+     * Aqui es donde llegan las respuestas de las credenciales
+     * **/
+    public function actionOauthocallback(){
+        # metodo que se ejecuta cuando no hay credenciales
+        # direccion de respuesta
+        # localhost/web/index.php?r=simgevent/oauthocallback
+        
+        $rGoogle = new Srestgoogledrive();
+        $url = $rGoogle->oauth_callback();
+        if(!is_null($url)){
+            return $this->redirect($url, 302);
+        }        
+        //continuamos con la suida de las imagenes
+        return $this->goHome();
+    }
+
+    /**
+     * crea un nuevo modelo de Simgevent.
+     * Si la creacion es exitosa, el navegador sera direccionado a la pagina view.
      * @return mixed
      */
     public function actionCreate($fkevent)
     {
-
+        $idKeyImage = null;
         $model = new Simgevent();
         yii::warning("Pase a action create");
         if($model->load(Yii::$app->request->post())){
@@ -91,48 +108,64 @@ class SimgeventController extends Controller
                 $mImg = new Simgevent();
                 $mImg->fkevent = $fkevent;
                 $mImg->fechaing = new Expression('NOW()');
-                $mImg->estado = "P";
-                // Camino donde se guardara las imagenes
-                $path = Yii::getAlias('@webroot').
-                        Yii::$app->params['uploadEvents'].
-                        $mImg->fkevent . '/';
-
-                yii::warning("file : " . $images[$i]);
+                $mImg->estado = "P"; #mi imagen subida sin procesar
+                
+                # obtenemos la imagen de la lista
                 $img = $images[$i];
-
+                
                 // obtenemos la extension
-                $ext = end((explode(".", $images[$i]->name)));
+                $tmp = (explode(".", $images[$i]->name));
+                $ext = end($tmp);
                 $ext = strtolower($ext);
                 // generamos un nombre aleatorio de 20 caracteres
                 $mImg->path = Yii::$app
                                     ->security
                                     ->generateRandomString(20).".{$ext}";
-                Yii::warning("[path: " . $mImg->path . '] [fkevent : ' . $mImg->fkevent);
-                // aqui es donde guardaremos las imagenes
-                if($mImg->save()){
-                    if($img !== false){
-                        // creamos el directorio
-                        FileHelper::createDirectory($path);
-
-                        $camino = $path;
-                        //      directorio + nombre de fotografia
-                        $path = $path . $mImg->path;
-                        Yii::warning('camino : ' . $path);
-
-                        // guarda la imagen en el servidor
-                        $img->saveAs($path);
-                        // aqui creamos la marca de agua
-                        $this->createMarcaAgua($camino, $mImg->path);
-                    }
-                }
-
+                
+                if($img !== false){
+                    #Ahora subimos al servidor
+                    $mImg->idimagecloud = $this->upload_image_to_Cloud($fkevent, $img->tempName, $mImg->path, $img->type);
+                    $mImg->save();
+                    # verificar la marca de agua
+                    # $this->createMarcaAgua($camino, $mImg->path);
+                }                
             }
+            //return $this->render('connect', ["data" =>"ID de carpeta encontrada $data"]);
             return $this->redirect(
-                        [
-                            'index',
-                            'fkevent' => $fkevent]);
+                        ['index', 'fkevent' => $fkevent]);
         }else{
             return $this->render('create', ['model' => $model]);
+        }
+    }
+    /** 
+     * Metodo que carga sube una iamgen a la nube
+     * @param $fkEvent Llave primaria del evento que es el nombre de la carpeta. 
+     * @param $file_path Ruta donde esta ubicado el archivo
+     * @param $name Es el nuevo nombre de la imagen con el que se subira a la nube
+     * @param $mimeType Es el mime type del archivo que se subira a la nube
+     */
+    private function upload_image_to_Cloud($fkEvent, $file_path, $name, $mimeType){
+        $rGoogle = new Srestgoogledrive();
+        $client = $rGoogle->connect_to_cloud();
+        if(!is_null($client)){
+            # buscamos si ya tenemos la carpeta del evento
+            $idSearch = $rGoogle->searchFolder($client, "e".$fkEvent);
+            $idFile   = null;
+            if(is_null($idSearch)){
+                # 0B2xwIp-Xlx0dQ1hBZzY5LV9heGc  events
+                # 0B2xwIp-Xlx0dR2dJcHowYzdRaVU faces
+                # Creamos el directorio en la nube dentro de la carpeta events
+                $idFile = $rGoogle->createDirectory($client, "e".$fkEvent, "0B2xwIp-Xlx0dQ1hBZzY5LV9heGc");
+                Yii::Warning("ide folder creado $idFile");
+                $idSearch = $idFile;
+            }
+        
+            $rGoogle->uploadFileBig($file_path, $client, $name, "desde yii2", $mimeType, $idSearch);
+            $idImage = $rGoogle->searchImage($client, $name);
+
+            return $idImage;
+        }else{
+            $this->redirect(["site/login"]);
         }
     }
     /**
@@ -174,36 +207,17 @@ class SimgeventController extends Controller
      */
     public function actionDelete($id)
     {
-
         $model = $this->findModel($id);
-
+        $rGoogle = new Srestgoogledrive();
         // segundo obtenemos el modelo evento social
         $moEvento = Seventosocial::findOne(['pkevento' => $model->fkevent]);
-        if(isset($model)){ // variable definida
-            Yii::warning("eliminado la imagen evento: " . $path);
-            $path = Yii::getAlias('@webroot').
-                    Yii::$app->params['uploadEvents'].
-                    $model->fkevent . '/'.
-                    $model->path;
-            @unlink($path);
-
-            // eliminamos el water image
-            $path = Yii::getAlias('@webroot').
-                    Yii::$app->params['uploadEvents'].
-                    $model->fkevent . '/water-'.
-                    $model->path;
-            @unlink($path);
-
-            // eliminamos la miniatura
-            /*$path = Yii::getAlias('@webroot').
-                    Yii::$app->params['uploadEvents'].
-                    $model->fkevent . '/thumb-'.
-                    $model->path;
-            @unlink($path);*/
-
+        if(isset($model)){
+            $client = $rGoogle->connect_to_cloud();
+            #eliminamos el archivo
+            $rGoogle->deleteFile($client, $model->idimagecloud);
+            #eliminamos de la base de datos
             $model->delete();
         }
-
         return $this->redirect([
                                 'index',
                                 'fkevent' => $model->fkevent,

@@ -12,13 +12,14 @@ use yii\web\UploadedFile;
  * @property integer $fkevent
  * @property string $path
  * @property string $fechaing
+ * @property string $estado
+ * @property string @idimagecloud
  *
  * @property Seventosocial $fkevent0
  * @property Sscanner[] $sscanners
  */
 class Simgevent extends \yii\db\ActiveRecord
-{
-    //Ademas esta es la fotografia que se implementara como producto de carrito
+{    
     /**
      * Esta es la fotografia que se cargara
      * @var [type]
@@ -54,6 +55,8 @@ class Simgevent extends \yii\db\ActiveRecord
             'path' => 'Nombre de fotografia',
             'fechaing' => 'Fecha de subida',
             'image' => 'Fotografia',
+            "estado" => "Estado de fotografia",
+            "idimagecloud" => "Id Cloud image"
         ];
     }
 

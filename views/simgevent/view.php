@@ -18,10 +18,7 @@ use yii\widgets\DetailView;
             // la fotografia
             [
                 'attribute' => 'image',
-                'value'     =>  Yii::getAlias('@web').'/'
-                                .'upload/events/'
-                                .$model->fkevent 
-                                .'/' . $model->path,
+                'value'     =>  "https://drive.google.com/uc?id=" . $model->idimagecloud,
                   'format'    => ['image',['width'=>'200','height'=>'200']],
             ],
         ],
