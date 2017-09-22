@@ -8,7 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 /**
- * Controlador para conectarse a los servicios web de google drive
+ * Clase encargada de conectarse al servicio en la nube de google
  */
 
 class Srestgoogledrive

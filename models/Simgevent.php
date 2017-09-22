@@ -13,7 +13,7 @@ use yii\web\UploadedFile;
  * @property string $path
  * @property string $fechaing
  * @property string $estado
- * @property string @idimagecloud
+ * @property string $idimagecloud
  *
  * @property Seventosocial $fkevent0
  * @property Sscanner[] $sscanners

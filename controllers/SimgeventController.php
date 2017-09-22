@@ -12,7 +12,8 @@ use yii\filters\VerbFilter;
 use yii\db\Expression;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
-use app\models\Srestgoogledrive;
+use app\models\SrestGoogleDrive;
+use app\models\SresClientWebSocket;
 /**
  * SimgeventController implements the CRUD actions for Simgevent model.
  */
@@ -74,7 +75,7 @@ class SimgeventController extends Controller
         # direccion de respuesta
         # localhost/web/index.php?r=simgevent/oauthocallback
         
-        $rGoogle = new Srestgoogledrive();
+        $rGoogle = new SrestGoogleDrive();
         $url = $rGoogle->oauth_callback();
         if(!is_null($url)){
             return $this->redirect($url, 302);
@@ -88,8 +89,7 @@ class SimgeventController extends Controller
      * Si la creacion es exitosa, el navegador sera direccionado a la pagina view.
      * @return mixed
      */
-    public function actionCreate($fkevent)
-    {
+    public function actionCreate($fkevent){
         $idKeyImage = null;
         $model = new Simgevent();
         yii::warning("Pase a action create");
@@ -97,7 +97,7 @@ class SimgeventController extends Controller
             $model->fkevent = $fkevent;
             $model->fechaing = new Expression('NOW()');
             $model->estado = "P";
-            // devuelve un array de imagenes
+            //devuelve un array de imagenes
             $images = $model->uploadImage();
 
             // multiple archivos
@@ -125,7 +125,11 @@ class SimgeventController extends Controller
                 if($img !== false){
                     #Ahora subimos al servidor
                     $mImg->idimagecloud = $this->upload_image_to_Cloud($fkevent, $img->tempName, $mImg->path, $img->type);
-                    $mImg->save();
+                    if($mImg->save()){
+                        #si se guardo correctamente enviamos notificacion
+                        Yii::Warning("intentando enviar al websocket");
+                        SresClientWebSocket::sendMessageImg($mImg->pkimgevent, $mImg->idimagecloud);
+                    }
                     # verificar la marca de agua
                     # $this->createMarcaAgua($camino, $mImg->path);
                 }                
@@ -145,7 +149,7 @@ class SimgeventController extends Controller
      * @param $mimeType Es el mime type del archivo que se subira a la nube
      */
     private function upload_image_to_Cloud($fkEvent, $file_path, $name, $mimeType){
-        $rGoogle = new Srestgoogledrive();
+        $rGoogle = new SrestGoogleDrive();
         $client = $rGoogle->connect_to_cloud();
         if(!is_null($client)){
             # buscamos si ya tenemos la carpeta del evento
@@ -208,7 +212,7 @@ class SimgeventController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $rGoogle = new Srestgoogledrive();
+        $rGoogle = new SrestGoogleDrive();
         // segundo obtenemos el modelo evento social
         $moEvento = Seventosocial::findOne(['pkevento' => $model->fkevent]);
         if(isset($model)){
