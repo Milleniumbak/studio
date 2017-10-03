@@ -55,11 +55,12 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
         // esto de abajo se configuro para rest api
         'urlManager' => [
+            'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'susuario'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'restusuario'],
             ],
         ],
         
