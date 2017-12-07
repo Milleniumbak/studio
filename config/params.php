@@ -21,4 +21,10 @@ return [
     INSERT INTO public.stipousuario(codigo, descripcion) VALUES ('001', 'FOTOGRAFO');
     INSERT INTO public.stipousuario(codigo, descripcion) VALUES ('002', 'CLIENTE');
 
+
+    configuracion de heroku
+    
+    https://stackoverflow.com/questions/33160064/yii2-app-not-displaying-on-heroku-domain
+
 */
+
