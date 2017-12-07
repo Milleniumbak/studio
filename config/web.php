@@ -89,6 +89,7 @@ $config = [
     'params' => $params,
 ];
  //habilitar para el modo depurador
+/* deshabilitando ya q estamos enviando al servidor de produccion
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
@@ -101,5 +102,5 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
     ];
 }
-
+*/
 return $config;
