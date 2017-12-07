@@ -20,7 +20,6 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "kartik-v/yii2-widgets": "*",
-        "yii2mod/yii2-cart": "*",
         "paypal/rest-api-sdk-php": "*",
         "kartik-v/yii2-grid": "@dev",
         "yiisoft/yii2-imagine": "~2.0.0",

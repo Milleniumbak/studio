@@ -33,21 +33,6 @@
                 . Html::endForm()
                 . '</li>'
             ),
-
-            Yii::$app->user->isGuest ? (
-                ""
-            ) : (
-                '<li role="presentation" >'.
-                    '<a href="' . Url::toRoute(['sbuyphoto/list']) . '">'.
-                        '<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">'.
-                        '</span> Carrito '.
-
-                        '<span class="badge">' . Yii::$app->cart->getCount() .
-                        '</span>'.
-
-                    '</a>'.
-                '</li>'
-            ),
         ],
     ]);
  ?>

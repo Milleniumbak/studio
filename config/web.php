@@ -8,17 +8,6 @@ $config = [
     'bootstrap' => ['log'],
     'language' => 'es',
     'components' => [
-        // componente para el carrito de compra
-        'cart' => [
-            'class' => 'yii2mod\cart\Cart',
-            // Usted puede cambiar la clase de almacenamiento por defectos
-            // Estoy deshabilitando el guardar el carrito en el servidor
-            /*'storageClass' => [
-                'class' => 'yii2mod\cart\storage\DatabaseStorage',
-                // you can also override some properties
-                'deleteIfEmpty' => true
-            ]*/
-        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'STUDIO2045',
