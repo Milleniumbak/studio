@@ -65,8 +65,8 @@ class Susuario extends \yii\db\ActiveRecord
             [['spassword'], 'string', 'max' => 50],
             [['spassword'], 'string', 'min' => 6],
 
-            [['password_repeat'], 'required'],
-            ['password_repeat', 'compare', 'compareAttribute'=>'spassword', 'skipOnEmpty' => false, 'message'=>"Contraseñas diferentes!!"],
+            [['password_repeat'], 'required', 'skipOnEmpty' => true],
+            ['password_repeat', 'compare', 'compareAttribute'=>'spassword', 'skipOnEmpty' => true, 'message'=>"Contraseñas diferentes!!"],
 
 
         ];

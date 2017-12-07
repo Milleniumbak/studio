@@ -24,76 +24,29 @@ class Srestgoogledrive
     *   devuelve un objeto cliente con la conexion a la nube
     **/
     public function connect_to_cloud(){
-        $credencial_json = Yii::getAlias("@app") ."/client_id.json";
-        $credentials = Yii::getAlias("@app") ."/credentials.json";
+
+        $credencial_json = Yii::getAlias("@app") . Yii::$app->params["PATH_CREDENCIALES"];
         if (!file_exists($credencial_json)){
             Yii::Warning("Configuracion a servidor no encontrada");
             return null;
         }
-            
-        # Autenticacion con OAth
-        $client = new \Google_Client();
-        $client->setAuthConfig($credencial_json);
-        #$client->setAuthConfigFile($credencial_json);
-        $client->addScope(\Google_Service_Drive::DRIVE_FILE);         
-        $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/web/index.php?r=simgevent/oauthocallback');
-        $client->setAccessType('offline');
-        $client->setApprovalPrompt('force');
 
         # verificamos si existe el archivo de credenciales
-        if (file_exists($credentials)){
-            $access_token = (file_get_contents($credentials));
-            $client->setAccessToken($access_token);
-            #verificamos si el token de acceso a expirado
-            if ($client->isAccessTokenExpired()) {                
-                Yii::Warning("Token ha expirado");
-                $token = $client->getRefreshToken();
-                $client->fetchAccessTokenWithRefreshToken($token);
-                file_put_contents($credentials, json_encode($client->getAccessToken()));
-            }else{
-                Yii::Warning("El token sigue vigente!!!");
-            }
+        if (file_exists($credencial_json)){            
+            $email = Yii::$app->params["ACCOUNT_SERVICE"];
+            $scopes = [ \Google_Service_Drive::DRIVE_FILE ];
+            $client = new \Google_Client();
+            $client->setAuthConfig($credencial_json);        
+            $client->setApplicationName("Cliente de studio-web-login");
+            $client->setSubject($email);
+            $client->setScopes($scopes);
+
             return $client;
         }else{
             # redireccionar a autocallback
             Yii::Warning("Archivo de credenciales no existe!!");
             return null;
         }
-    }
-    /**
-    * Metodo para la autenticacion 
-    * call back que vuelve del Servidor
-    **/
-    public function oauth_callback(){
-                
-        $credencial_json = Yii::getAlias("@app") ."/client_id.json";
-        $credentials = Yii::getAlias("@app") ."/credentials.json";
-
-        $client = new \Google_Client();
-        $client->setAuthConfigFile($credencial_json);
-        $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/web/index.php?r=simgevent/oauthocallback');
-        $client->addScope(\Google_Service_Drive::DRIVE_FILE);
-        $client->setAccessType('offline');
-        $client->setApprovalPrompt('force');
-
-        if (!isset($_GET['code'])) {
-            Yii::Warning("Code no esta definida");            
-            $auth_url = $client->createAuthUrl();
-            Yii::Warning("url google autho : " . $auth_url);
-            // devolvemos el redireccionamiento de autenticacion de google
-            return filter_var($auth_url, FILTER_SANITIZE_URL);
-        } else {
-            #cuando no llego el codigo aun            
-            $client->authenticate($_GET['code']);
-            Yii::Warning("codigo de autenticacion : " . $_GET['code']);
-            $access_token = $client->getAccessToken();
-            # guardamos el archivo
-            file_put_contents($credentials, json_encode($access_token));
-
-            # quiere decir que se guardo correctamente las credenciales
-            # ahora continuamos con la subida de imagenes
-            return null;
-        }        
     }
     /**
     *
@@ -205,6 +158,28 @@ class Srestgoogledrive
         echo json_encode($files_list);
         return $files_list;
     }
+
+    /**
+     * Metodo que adiciona un permiso publico para un archivo
+     * @param  [type] $client  conexion a la nube de google
+     * @param  [type] $file_id Identificador de google 
+     * @return [type]          no retorna
+     */
+    public function insertartPermisos($client, $file_id){
+
+        $service = new \Google_Service_Drive($client);
+        $newPermission = new \Google_Service_Drive_Permission();
+        // no se ingresa el email cuando se quiere compartir la imagen con cualquiera persona
+        //$newPermission->setEmailAddress("limbertyalusqui@gmail.com");
+        $newPermission->setType("anyone");//[user] cuando se dara permiso a un usuario con email
+        $newPermission->setRole("reader");
+        try {
+            $service->permissions->create($file_id, $newPermission);
+        } catch (Exception $e) {
+            Yii::Warning("Error al crear permiso publico : " . $e->getMessage());
+        }
+    }
+
     /**
      * Metodo que sube a la nube un archivo
      * @param $file_path direccion donde esta ubicado el archivo
@@ -217,8 +192,7 @@ class Srestgoogledrive
      */
     public function uploadFileBig($file_path, $client, $name, $description, $mime_type, $parent_folder_id){
         
-        #$file_path = "/home/limbert/Documentos/repositorios/studio/php-drive/src1.png";
-        $service = new \Google_Service_Drive($client);        
+        $service = new \Google_Service_Drive($client);
         #tamaño del archivo en bytes
         $sizeFile = filesize($file_path);
         

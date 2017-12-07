@@ -70,7 +70,7 @@ class SimgusuarioController extends Controller
         if($model->load(Yii::$app->request->post())){
             $model->fkusuario = Yii::$app->user->identity->getId();
             $model->fechaing = new Expression('NOW()');
-
+            $model->idimagecloud = "";
             $image = $model->uploadImage();
             // Camino donde se guardara la imagen
             $path = Yii::getAlias('@webroot').

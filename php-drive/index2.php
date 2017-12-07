@@ -9,8 +9,8 @@
 <body>
     <h2>imagenes desde google drive</h2>    
     <!-- <img src="https://drive.google.com/thumbnail?id=0B2xwIp-Xlx0dc1ZwandEX2JxQTQ" alt=""> -->    
-    <a href="https://drive.google.com/uc?id=0B2xwIp-Xlx0dc1ZwandEX2JxQTQ" target="_blank">
-        <img src="https://drive.google.com/thumbnail?sz=w300-h300&id=0B2xwIp-Xlx0dc1ZwandEX2JxQTQ" alt="">
+    <a href="https://drive.google.com/uc?id=1Uqcw_8tHq2qy4xgXcIet9sxf-EFQtLhS" target="_blank">
+        <img src="https://drive.google.com/thumbnail?sz=w300-h300&id=1Uqcw_8tHq2qy4xgXcIet9sxf-EFQtLhS" alt="">
     </a>
     
     <!-- <img src="https://drive.google.com/uc?id=0B2xwIp-Xlx0dc1ZwandEX2JxQTQ" alt="error"> -->

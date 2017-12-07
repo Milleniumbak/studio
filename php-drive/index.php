@@ -1,39 +1,98 @@
 <?php
+/****************
+
+	VERSION PARA AUTENTICACION CON CUENTA DE SERVICIO
+	para no estar autenticando cada usuario
+	los archivos solo pueden ser visibles por la aplicacion
+
+	no se puede ver en google drive
+
+*******************/
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-if (!file_exists("client_id.json")) 
-exit("Client secret file not found");
-
 $client = new Google_Client();
-$client->setAuthConfig('client_id.json');
-$client->addScope(Google_Service_Drive::DRIVE_FILE); // admi. los archivos solo de esta app
 
-if (file_exists("credentials.json")) {
-	$access_token = (file_get_contents("credentials.json"));
-	$client->setAccessToken($access_token);
-	//Refresh the token if it's expired.
-	if ($client->isAccessTokenExpired()) {
-		echo "Mi token ha expirado!!!!!!!!!!!!!";
-		$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());		
-		file_put_contents($credentialsPath, json_encode($client->getAccessToken()));		
-	}
-	// id del folder events "0B2xwIp-Xlx0dQ1hBZzY5LV9heGc"
-	// createDirectory($client, "02", "0B2xwIp-Xlx0dQ1hBZzY5LV9heGc");
+if ($credentials_file = checkServiceAccountCredentialsFile()) {
+	echo "path : " . $credentials_file;
+
+	putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $credentials_file);
+	$email = 'studio-web-login@studio-37248.iam.gserviceaccount.com';	
+	$scopes = [ Google_Service_Drive::DRIVE_FILE ];
+	$client->useApplicationDefaultCredentials();
+	$client->setApplicationName("Cliente de studio-web-login");
+	$client->setSubject($email);
+	$client->setScopes($scopes);
 	
-	/*
-	$id = searchFolder($client, "02");
-	if(!is_null($id)){
-		//uploadFile($client, "segundo.png", "primera imagen subida", "image/png", $id);
-		uploadFileBig($client, "scrito_size1.png", "linux desktop", "image/png", $id);
-	}
-	*/
-
+	# id de prueba1  :::  1cnpeV9n8XdyX7gp2JRqVUjIU7pEqW9cj
+	$idFolder = "1cnpeV9n8XdyX7gp2JRqVUjIU7pEqW9cj";
+	$idImage = "1Uqcw_8tHq2qy4xgXcIet9sxf-EFQtLhS";
+	//echo "id : " . createDirectoryRoot($client, "prueba1");
 	//listarArchivos($client);
-	descargarArchivoConBase64($client);
-} else {
-  $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/php-drive/oauth2callback.php';
-  header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+	insertartPermisos($client, "1ZSE4oZ6GRvZ1VJw41XQ9vzKhEVYFH9Qi");
+	//descargarArchivoConBase64($client, $idImage);
+	//descargarArchivo($client, $idImage);
+	//uploadFile($client, "segundo.png", "primera imagen subida", "image/png", $id);
+}else{
+	echo "error de archivo";
+	exit("No se encontraron credenciales *.p12");
 }
+
+
+/**
+ * Adiciona el permiso para el archivo  
+ * @param  [type] $client  [description]
+ * @param  [type] $file_id [description]
+ * @return [type]          [description]
+ */
+function insertartPermisos($client, $file_id){
+  
+  $service = new Google_Service_Drive($client);
+
+  $newPermission = new Google_Service_Drive_Permission();
+  // no se ingresa el email cuando se quiere compartir la imagen con cualquiera persona
+  //$newPermission->setEmailAddress("limbertyalusqui@gmail.com");
+  $newPermission->setType("anyone");
+  $newPermission->setRole("reader");
+  try {				
+    return $service->permissions->create($file_id, $newPermission);
+  } catch (Exception $e) {
+    echo ("An error occurred: " . $e->getMessage());
+  }
+  return null;
+}
+
+// get file account credential
+function checkServiceAccountCredentialsFile()
+{
+  // service account creds
+  	#$application_creds = __DIR__ . '/credenciales/studio-fa9799313987.p12';
+	$application_creds = __DIR__ . '/credenciales/studio-caa158b3c140.json';
+
+  	return file_exists($application_creds) ? $application_creds : false;
+}
+
+/**
+ * Crea un directorio en la raiz
+ * @param  [type] $client      [description]
+ * @param  [type] $name_folder [description]
+ * @return [type]              [description]
+ */
+function createDirectoryRoot($client, $name_folder){
+	$drive_service = new Google_Service_Drive($client);
+	$fileMetadata = new Google_Service_Drive_DriveFile(array(
+		'name' => $name_folder,
+		'mimeType' => 'application/vnd.google-apps.folder',
+		)
+	);
+
+	$file = $drive_service->files->create($fileMetadata, array(
+		'fields' => 'id'));
+	printf("El Folder ID para guardar en algun lugar : %s\n", $file->id);
+	return $file->id;
+}
+
+// finalizacion de las llamadas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 /**
 	creamos el directorio de eventos sociales
   	y devolvemos el identificador de carpeta
@@ -191,15 +250,15 @@ function listarArchivos($client){
 		$res['id'] = $file->getId();
         $files[] = $res;
 	}	
+	echo "listando";
 	echo json_encode($files_list);
 }
 /* 
 	Metodo para descargar 
 */
-function descargarArchivo($client){
+function descargarArchivo($client, $fileId){
 	//$fileId = '0B2xwIp-Xlx0dZW9BNlpmV2NhZ00'; // del archivo de 16MB
-	$fileId = "0B2xwIp-Xlx0dc1ZwandEX2JxQTQ"; // del archivo de 0.5MB
-
+	
 	$drive_service = new Google_Service_Drive($client);
 	$response = $drive_service->files->get($fileId, array(
 		'alt' => 'media'));
@@ -231,11 +290,11 @@ function descargarArchivo($client){
 	echo "</html>";
 }
 
-function descargarArchivoConBase64($client){
+function descargarArchivoConBase64($client, $fileId){
 	// https://github.com/google/google-api-php-client/blob/master/examples/large-file-download.php
 	// http://academy.leewayweb.com/como-acceder-a-google-drive-usando-php/
 	//$fileId = "0B2xwIp-Xlx0dc1ZwandEX2JxQTQ"; // del archivo de 0.5MB
-	$fileId = "0B2xwIp-Xlx0dODN3YjFpcXV0VEE"; // scrito_size1.png
+	
 	$drive_service = new Google_Service_Drive($client);
 
 	// obtengo el metadata del archivo

@@ -59,9 +59,30 @@ $config = [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'showScriptName' => false,
-            'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'restusuario'],
-            ],
+            'rules' =>  [
+                            [ // ruta de usuario
+                                'class' => 'yii\rest\UrlRule', 
+                                'controller' => 'restusuario',
+                             'extraPatterns' => [
+                                'GET autenticacion/<username>/<password>' => 'autenticacion',
+                                                ],
+                            ],
+                            [ // ruta de evento social
+                                'class' => 'yii\rest\UrlRule', 
+                                'controller' => 'resteventosocial',
+                             'extraPatterns' => [
+                                'GET guest/<id>' => 'guest',
+                                                ],
+                            ],                            
+                            [ // ruta de imagen de usuario
+                                'class' => 'yii\rest\UrlRule', 
+                                'controller' => 'restimgusuario',
+                             'extraPatterns' => [
+                                'GET adicionar/<pkimgusuario>/<fkusuario>/<path>/<idimagecloud>' => 'adicionar',
+                                'GET getimage/<pkusuario>' => 'getimage',
+                                                ],
+                            ],
+                        ],
         ],
         
     ],

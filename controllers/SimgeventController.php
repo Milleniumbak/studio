@@ -103,7 +103,7 @@ class SimgeventController extends Controller
             // multiple archivos
             $filesCount = count($images);
             yii::warning("fileCount : " . $filesCount);
-
+            $folder_id_parent = $this->getIdFolder("events");
             for ($i=0; $i < $filesCount; $i++) {
                 $mImg = new Simgevent();
                 $mImg->fkevent = $fkevent;
@@ -124,7 +124,9 @@ class SimgeventController extends Controller
                 
                 if($img !== false){
                     #Ahora subimos al servidor
-                    $mImg->idimagecloud = $this->upload_image_to_Cloud($fkevent, $img->tempName, $mImg->path, $img->type);
+                    $mImg->idimagecloud = $this->upload_image_to_Cloud($fkevent, $img->tempName, $mImg->path, $img->type, $folder_id_parent);
+                    #ahora adicionamos los permisos para que sea publico
+                    $this->actualizarPermisos($mImg->idimagecloud);
                     if($mImg->save()){
                         #si se guardo correctamente enviamos notificacion
                         Yii::Warning("intentando enviar al websocket");
@@ -141,25 +143,52 @@ class SimgeventController extends Controller
             return $this->render('create', ['model' => $model]);
         }
     }
+    private function actualizarPermisos($file_id){
+        $rGoogle = new SrestGoogleDrive();
+        $client = $rGoogle->connect_to_cloud();
+        if(!is_null($client)){
+            $rGoogle->insertartPermisos($client, $file_id);
+        }else{
+            $this->redirect(["site/login"]);
+        }        
+    }
+    /**
+     *  Metodo que obtiene el id del archivo con el nombre     
+     *  Si no existe lo crea y nos devuelve un id
+     *  @param $name nombre del archivo que se va buscar en el drive
+     */
+    private function getIdFolder($name){
+        $rGoogle = new SrestGoogleDrive();
+        $client = $rGoogle->connect_to_cloud();
+        if(!is_null($client)){
+            $idSearch = $rGoogle->searchFolder($client, $name);
+            if(is_null($idSearch)){
+                $idFile = $rGoogle->createDirectory($client, $name, null);
+                return $idFile;
+            }else{
+                return $idSearch;
+            }
+        }else{
+            $this->redirect(["site/login"]);
+        }
+    }
     /** 
-     * Metodo que carga sube una iamgen a la nube
+     * Metodo que sube una iamgen a la nube
      * @param $fkEvent Llave primaria del evento que es el nombre de la carpeta. 
      * @param $file_path Ruta donde esta ubicado el archivo
      * @param $name Es el nuevo nombre de la imagen con el que se subira a la nube
      * @param $mimeType Es el mime type del archivo que se subira a la nube
      */
-    private function upload_image_to_Cloud($fkEvent, $file_path, $name, $mimeType){
+    private function upload_image_to_Cloud($fkEvent, $file_path, $name, $mimeType, $folder_id_parent){
         $rGoogle = new SrestGoogleDrive();
         $client = $rGoogle->connect_to_cloud();
         if(!is_null($client)){
             # buscamos si ya tenemos la carpeta del evento
             $idSearch = $rGoogle->searchFolder($client, "e".$fkEvent);
             $idFile   = null;
-            if(is_null($idSearch)){
-                # 0B2xwIp-Xlx0dQ1hBZzY5LV9heGc  events
-                # 0B2xwIp-Xlx0dR2dJcHowYzdRaVU faces
+            if(is_null($idSearch)){                
                 # Creamos el directorio en la nube dentro de la carpeta events
-                $idFile = $rGoogle->createDirectory($client, "e".$fkEvent, "0B2xwIp-Xlx0dQ1hBZzY5LV9heGc");
+                $idFile = $rGoogle->createDirectory($client, "e".$fkEvent, $folder_id_parent);
                 Yii::Warning("ide folder creado $idFile");
                 $idSearch = $idFile;
             }

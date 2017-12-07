@@ -11,9 +11,11 @@ use yii\web\UploadedFile;
  * @property integer $fkusuario
  * @property string $path
  * @property string $fechaing
- *
+ * @property string $idimagecloud
+
  * @property Susuario $fkusuario0
  */
+
 class Simgusuario extends \yii\db\ActiveRecord
 {
     // upload_max_filesize verificar esta propiedad en php.ini si no guarda la imagen
@@ -54,6 +56,7 @@ class Simgusuario extends \yii\db\ActiveRecord
             'path' => 'Nombre de Fotografia',
             'fechaing' => 'Fecha de Subida',
             'image' => 'Fotografia',
+            'idimagecloud' => 'Identificador de imagen en google',
         ];
     }
     /**
