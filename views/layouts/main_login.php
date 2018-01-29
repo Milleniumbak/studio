@@ -13,8 +13,7 @@
             ['label' => 'Inicio', 'url' => ['/site/index']],
             ['label' => 'Perfil', 'url' => ['/susuario/update', 'id'=> Yii::$app->user->identity->getId()]],
 
-            !$isFotografo ? (['label' => 'Deteccion Facial', 'url' => ['/simgusuario/index', 'pkusuario' => Yii::$app->user->identity->getId()]]
-                ) : (""),
+            $isFotografo ? (['label' => 'Enviar Mensajes', 'url' => ['/smessage/index']]) : (""),
 
             $isFotografo ? (
 

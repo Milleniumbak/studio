@@ -143,6 +143,7 @@ class SimgeventController extends Controller
             return $this->render('create', ['model' => $model]);
         }
     }
+
     private function actualizarPermisos($file_id){
         $rGoogle = new SrestGoogleDrive();
         $client = $rGoogle->connect_to_cloud();

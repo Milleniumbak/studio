@@ -24,7 +24,8 @@
         "kartik-v/yii2-grid": "@dev",
         "yiisoft/yii2-imagine": "~2.0.0",
         "2amigos/qrcode-library":"~1.1",
-        "google/apiclient": "^2.0"
+        "google/apiclient": "^2.0",
+        "wisembly/elephant.io": "^3.3"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

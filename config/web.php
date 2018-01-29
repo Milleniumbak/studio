@@ -54,15 +54,26 @@ $config = [
                                 'controller' => 'restusuario',
                              'extraPatterns' => [
                                 'GET autenticacion/<username>/<password>' => 'autenticacion',
+                                'GET registrartoken/<token>/<idusuario>/<topic>/<imei_device>' => 'registrartoken'
                                                 ],
                             ],
+                            
+                            [ // ruta de scompra
+                                'class' => 'yii\rest\UrlRule', 
+                                'controller' => 'restcompra',
+                             'extraPatterns' => [
+                                'GET gettipopapeles' => 'gettipopapeles',
+                                'GET getdimensiones' => 'getdimensiones',
+                                                ],
+                            ],
+
                             [ // ruta de evento social
                                 'class' => 'yii\rest\UrlRule', 
                                 'controller' => 'resteventosocial',
                              'extraPatterns' => [
                                 'GET guest/<id>' => 'guest',
                                                 ],
-                            ],                            
+                            ],
                             [ // ruta de imagen de usuario
                                 'class' => 'yii\rest\UrlRule', 
                                 'controller' => 'restimgusuario',
@@ -71,6 +82,13 @@ $config = [
                                 'GET getimage/<pkusuario>' => 'getimage',
                                                 ],
                             ],
+                            [ // ruta de imagen de usuario
+                                'class' => 'yii\rest\UrlRule', 
+                                'controller' => 'restimgevent',
+                             'extraPatterns' => [
+                                'GET getimages/<pkevent>' => 'getimages',
+                                                ],
+                            ],                            
                         ],
         ],
         
@@ -78,8 +96,8 @@ $config = [
     'params' => $params,
 ];
  //habilitar para el modo depurador
-/* deshabilitando ya q estamos enviando al servidor de produccion
-if (YII_ENV_DEV) {
+// deshabilitando ya q estamos enviando al servidor de produccion
+/*if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
@@ -89,7 +107,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-    ];
+    ];*/
 }
-*/
+
 return $config;

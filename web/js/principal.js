@@ -1,29 +1,24 @@
-// es la funcion que se ejecutara cuando hay cambio
-// en el tipo de compra
-function modificarControles(value){
-    valor = $(value).find('input:checked').val()
-    if(valor==1){ // formato digital
-        $('#scompraimpresa-fktipopapel').attr('disabled', 'disabled');
-        $('#scompraimpresa-fkdimension').attr('disabled', 'disabled');
+function sendMessageAll(){
 
-        $('#scompraimpresa-cantidad').val('1');
-        $('#scompraimpresa-cantidad').attr('disabled', 'disabled');
-
-        $('#scompraimpresa-precio').val($('#sprecioxfoto1').val());
-    }else{
-        if(valor == 2){ // formato impreso
-            $('#scompraimpresa-fktipopapel').removeAttr('disabled');
-            $('#scompraimpresa-fkdimension').removeAttr('disabled');
-            $('#scompraimpresa-cantidad').val("1");
-            $('#scompraimpresa-cantidad').removeAttr('disabled');
-            $('#scompraimpresa-precio').val($('#sprecioxfoto1').val());
-        }
+    if(($('#tituloid').val().length <= 0) || ($('#messageid').val().length <= 0)){
+        alert("Titulo o Mensaje no puede estar vacio!!");
+        return;
     }
-}
-/**
- * Calcula el precio total en base a la cantidad de fotos que hara
- */
-function calcularprecio(cantidad){
-    precioUnitario = $('#sprecioxfoto1').val();
-    $('#scompraimpresa-precio').val(cantidad * precioUnitario);
+
+
+    $.get('sendmessageall', 
+        { 
+            'titulo' : $('#tituloid').val(), 
+            'cuerpo' : $('#messageid').val()
+        },
+        function(data){
+            var response = data;       
+
+            if(response == null){
+                response = "";
+            }else{
+                console.log("response : " + response);
+            }
+        }
+    );
 }
