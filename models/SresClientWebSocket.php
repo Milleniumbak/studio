@@ -28,7 +28,14 @@ class SresClientWebSocket
                 "idimgcloud"=>$idimgcloud
             );
         
-        $url = 'http://' . Yii::$app->params['SERV_IO_HOST'] . ':' . Yii::$app->params['SERV_IO_PORT'];
+        $url = "";
+
+        if(strlen(Yii::$app->params['SERV_IO_PORT']) > 0 ){
+            $url = 'http://' . Yii::$app->params['SERV_IO_HOST'] . ':' . Yii::$app->params['SERV_IO_PORT'];            
+        }else{
+            $url = 'http://' . Yii::$app->params['SERV_IO_HOST'];
+        }
+
         Yii::Warning('url : ' . $url);
         $client = new Client(new Version2X($url, [
             'headers' => [
@@ -54,8 +61,14 @@ class SresClientWebSocket
                         "idimgcloud"    =>$idimgcloud,
                         "idevent"   =>$idevent
                     );
-        
-        $url = 'http://' . Yii::$app->params['SERV_IO_HOST'] . ':' . Yii::$app->params['SERV_IO_PORT'];
+        $url = "";
+
+        if(strlen(Yii::$app->params['SERV_IO_PORT']) > 0 ){
+            $url = 'http://' . Yii::$app->params['SERV_IO_HOST'] . ':' . Yii::$app->params['SERV_IO_PORT'];            
+        }else{
+            $url = 'http://' . Yii::$app->params['SERV_IO_HOST'];
+        }
+
         Yii::Warning('url : ' . $url);
         $client = new Client(new Version2X($url, [
             'headers' => [
