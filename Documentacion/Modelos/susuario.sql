@@ -44,8 +44,7 @@ CREATE INDEX IXFK_susuario_stipousuario ON susuario (stipousuario ASC)
 /* Create Foreign Key Constraints */
 
 ALTER TABLE susuario ADD CONSTRAINT FK_susuario_stipousuario
-	FOREIGN KEY (stipousuario) REFERENCES stipousuario (pktipousuario) ON DELETE No Action ON UPDATE No Action
-;
+	FOREIGN KEY (stipousuario) REFERENCES stipousuario (pktipousuario) ON DELETE No Action ON UPDATE No Action;
 
 /* Create Table Comments, Sequences for Autonumber Columns */
 

@@ -6,8 +6,8 @@ return [
     'usrFotografo' => 2, // aqui colocamos el id del fotografo
     'imgWatermark'   => '/upload/watermark.png', // es la imagen con marca de agua
 
-    'SERV_IO_HOST' => 'nodjsstudio.herokuapp.com',  
-    'SERV_IO_PORT' => "", // local 8080
+    'SERV_IO_HOST' => '127.0.0.1',
+    'SERV_IO_PORT' => "8080", // en heroku es sin puerto
 
     "PATH_CREDENCIALES" => "/credenciales/credenciales.json",
     "ACCOUNT_SERVICE" => "studio-web-login@studio-37248.iam.gserviceaccount.com",
@@ -15,13 +15,6 @@ return [
 ];
 
 /** DATOS INICIALES PARA EL TIPO DE USUARIO
-
-    cuando ingresemos estos datos tenemos que configurar el id de fotografo y cliente
-    
-    INSERT INTO public.stipousuario(codigo, descripcion) VALUES ('001', 'FOTOGRAFO');
-    INSERT INTO public.stipousuario(codigo, descripcion) VALUES ('002', 'CLIENTE');
-
-
     configuracion de heroku
     
     https://stackoverflow.com/questions/33160064/yii2-app-not-displaying-on-heroku-domain

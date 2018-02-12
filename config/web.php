@@ -19,7 +19,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\Iuser',
+            'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -49,55 +49,22 @@ $config = [
             'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' =>  [
-                            [ // ruta de usuario
+                            [// ruta de usuario
                                 'class' => 'yii\rest\UrlRule', 
-                                'controller' => 'restusuario',
+                                'controller' => 'restalmacen',
                              'extraPatterns' => [
                                 'GET autenticacion/<username>/<password>' => 'autenticacion',
-                                'GET registrartoken/<token>/<idusuario>/<topic>/<imei_device>' => 'registrartoken'
-                                                ],
-                            ],
-                            
-                            [ // ruta de scompra
-                                'class' => 'yii\rest\UrlRule', 
-                                'controller' => 'restcompra',
-                             'extraPatterns' => [
-                                'GET gettipopapeles' => 'gettipopapeles',
-                                'GET getdimensiones' => 'getdimensiones',
-                                                ],
-                            ],
-
-                            [ // ruta de evento social
-                                'class' => 'yii\rest\UrlRule', 
-                                'controller' => 'resteventosocial',
-                             'extraPatterns' => [
-                                'GET guest/<id>' => 'guest',
-                                                ],
-                            ],
-                            [ // ruta de imagen de usuario
-                                'class' => 'yii\rest\UrlRule', 
-                                'controller' => 'restimgusuario',
-                             'extraPatterns' => [
-                                'GET adicionar/<pkimgusuario>/<fkusuario>/<path>/<idimagecloud>' => 'adicionar',
-                                'GET getimage/<pkusuario>' => 'getimage',
-                                                ],
-                            ],
-                            [ // ruta de imagen de usuario
-                                'class' => 'yii\rest\UrlRule', 
-                                'controller' => 'restimgevent',
-                             'extraPatterns' => [
-                                'GET getimages/<pkevent>' => 'getimages',
                                                 ],
                             ],                            
                         ],
         ],
-        
+        // finalizacion de url
     ],
     'params' => $params,
 ];
  //habilitar para el modo depurador
 // deshabilitando ya q estamos enviando al servidor de produccion
-/*if (YII_ENV_DEV) {
+if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
@@ -108,6 +75,6 @@ $config = [
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
     ];
-}*/
+}
 
 return $config;

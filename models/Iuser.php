@@ -1,7 +1,7 @@
 <?php
 namespace app\models;
 
-use app\models\Susuario;
+use app\models\Gusuario;
 use \yii\web\IdentityInterface;
 
 class Iuser implements IdentityInterface
@@ -20,7 +20,7 @@ class Iuser implements IdentityInterface
     {
         // tengo que por identificador en la BD
         //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
-        $usr = Susuario::findOne(['pkusuario' => $id]);
+        $usr = Cusuario::findOne(['pkusuario' => $id]);
         $iusr = new Iuser();
 
         if(!is_null($usr)){
@@ -36,7 +36,7 @@ class Iuser implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $usr = Susuario::findOne(['accesstoken' => $token]);
+        $usr = Csuser::findOne(['accesstoken' => $token]);
 
         $iusr = new Iuser();
         if(!is_null($usr)){
@@ -52,7 +52,7 @@ class Iuser implements IdentityInterface
      */
     public function getId()
     {
-        return $this->usuario->pkusuario;
+        return $this->usuario->pkuser;
     }
 
     /**
@@ -64,19 +64,11 @@ class Iuser implements IdentityInterface
     }
 
     /**
-     * Metodo que devuelve el tipo de usuario
-     * @return [entero] Devuelve un numero entero
-     */
-    public function getTipoUsuario(){
-        return $this->usuario->stipousuario;
-    }
-
-    /**
      * Devuelve el nombre de usuario
      * @return [String] Nombre de usuario
      */
     public function getUsername(){
-        return $this->usuario->username;
+        return $this->usuario->nickname;
     }
     /**
      * @inheritdoc
@@ -94,6 +86,6 @@ class Iuser implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->usuario->spassword === $password;
+        return $this->usuario->password === $password;
     }
 }

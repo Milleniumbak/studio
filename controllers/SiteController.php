@@ -5,13 +5,16 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\SrestGoogleDrive;
 
 class SiteController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -35,6 +38,9 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -48,11 +54,21 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         return $this->render('index');
     }
 
+    /**
+     * Login action.
+     *
+     * @return Response|string
+     */
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -61,28 +77,30 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            # si inicia session correctamente > enviamos a la pagina inicial
-            # primero creamos las credenciales para google
-            $google = new SrestGoogleDrive();
-            $client = $google->connect_to_cloud();
-            if(is_null($client)){
-                Yii::Warning("no se encontraron credenciales redireccionando!!");
-                return $this->redirect(['simgevent/oauthocallback']);
-            }else{
-                return $this->goHome();
-            }
+            return $this->goBack();
         }
         return $this->render('login', [
             'model' => $model,
         ]);
     }
 
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
 
         return $this->goHome();
     }
+
+    /**
+     * Displays contact page.
+     *
+     * @return Response|string
+     */
     public function actionContact()
     {
         $model = new ContactForm();
@@ -96,6 +114,11 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Displays about page.
+     *
+     * @return string
+     */
     public function actionAbout()
     {
         return $this->render('about');

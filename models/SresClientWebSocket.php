@@ -52,14 +52,14 @@ class SresClientWebSocket
     }
 
 
-    public static function sendMessageNotificacion($titulo, $mensaje, $tokens, $idimgcloud, $idevent){
+    public static function sendMessageNotificacion($titulo, $mensaje, $tokens, $estado, $idsolicitud){
 
         $data = array(
                         "tokens"    =>json_encode($tokens), 
                         "titulo"    =>$titulo, 
                         "cuerpo"    =>$mensaje,
-                        "idimgcloud"    =>$idimgcloud,
-                        "idevent"   =>$idevent
+                        "estado"    =>$estado,
+                        "idsolicitud"   =>$idsolicitud
                     );
         $url = "";
 
