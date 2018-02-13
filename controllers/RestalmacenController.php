@@ -3,7 +3,8 @@ namespace app\controllers;
 use yii\rest\ActiveController;
 use yii\db\Expression;
 use app\models\Gusuario;
-
+use app\models\Gnotificacion;
+use app\models\Sautorizacion;
 
 class RestalmacenController extends ActiveController{
 	
@@ -33,6 +34,55 @@ class RestalmacenController extends ActiveController{
 		$response = array('resultado' => $resultado);		
 		return $response;
 	}
-	public 
+	/**
+	 * metodo que busca las notificaciones
+	 *
+	 * @param [type] $fkusuario llave del usuario 
+	 * @return void
+	 */
+	public function actionGetnotificaciones($fkusuario){
+		$notis = Gnotificacion::find()
+						->where(["fkusuario" => $fkusuario])
+						->asArray()
+						->all();
+
+		if(count($notis) <= 0){
+			return array('resultado' => "-1");
+		}else{
+			return array('resultado' => "ok", "data"=> $notis);
+		}
+	}
+
+	/**
+	 * Servicio que registra el token del telefono movil
+	 *
+	 * @param [type] $token
+	 * @param [type] $idusuario
+	 * @param [type] $topic
+	 * @param [type] $imei_device
+	 * @return void
+	 */
+	public function actionRegistrartoken($token, $idusuario, $topic, $imei_device){
+		
+		$aut = Sautorizacion::find()->where(["token"=>$token])->one();
+
+		if(is_null($aut)){
+			$aut = new Sautorizacion();
+		}
+		
+		$aut->token = $token;
+		$aut->topic = $topic;
+		$aut->fkusuario = $idusuario;
+		$aut->imei_device = $imei_device;
+		$aut->fecha_registro = new Expression('NOW()');
+		
+		$aut->save();
+
+		$response = array('resultado' => "token guardado correctamente");
+		
+		return $response;
+
+	}	
+
 }
 ?>

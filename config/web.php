@@ -54,6 +54,8 @@ $config = [
                                 'controller' => 'restalmacen',
                              'extraPatterns' => [
                                 'GET autenticacion/<username>/<password>' => 'autenticacion',
+                                'GET registrartoken/<token>/<idusuario>/<topic>/<imei_device>' => 'registrartoken',
+                                'GET getnotificaciones/<fkusuario>' => 'getnotificaciones',
                                                 ],
                             ],                            
                         ],
